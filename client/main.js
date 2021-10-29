@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import './main.html';
 import './lib/session.js';
+import './lib/databases.js';
 
 Template.body.helpers({
   webSession: function() {

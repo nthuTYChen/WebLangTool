@@ -25,6 +25,11 @@
 			<input type="reset" value="Reset" />
 		</p>
 	</form>
+	<em>User Profile</em><br/>
+	Name: {{profileKey "name"}}<br/>
+	Type: {{profileKey "type"}}<br/>
+	Gender: {{profileKey "gender"}}<br/>
+	Age: {{profileKey "age"}}<br/>
 	<button id="testFuncCall">Call Server Function</button>
 	<button id="printProfile">Print Profile</button>
 	<button id="vocab">Vocabulary Master</button>
@@ -38,7 +43,6 @@
 		}
 	</style>
 	<form>
-		<h1>Vocabulary Test</h1>
 		<p>
 			Name: <input type="text" id="name" required />
 		</p>
@@ -51,17 +55,16 @@
 			<input type="radio" class="tussock" name="tussock" value="3" />
 			<label for="3">tussle</label><br/>
 			<input type="radio" class="tussock" name="tussock" value="4" />
-			<label for="1">tusk</label>
+			<label for="4">tusk</label>
 		</p>
 		<p>
 			<h3>ambit</h3>
-			
 			<input type="radio" class="ambit" name="ambit" value="1" />
 			<label for="1">a parallelogram with four equal sides</label><br/>
 			<input type="radio" class="ambit" name="ambit" value="2" />
 			<label for="2">the quality of affording easy familiarity and sociability</label><br/>
 			<input type="radio" class="ambit" name="ambit" value="3" />
-			<label for="3">energy in a system no longer available for mechanical work</label><br/>
+			<label for="3">energy in a system no longer for mechanical work</label><br/>
 			<input type="radio" class="ambit" name="ambit" value="4" />
 			<label for="4">an area in which something operates or has power or control</label>
 		</p>

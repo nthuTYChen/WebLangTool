@@ -20,8 +20,18 @@ export const addUpdateProfile = function (profile) {
       {upsert: true}
     );
 };
+
 export const checkAns = function(answers) {
   let score = 0;
+  /*if(answers.tussock === 1) {
+    score += 1;
+  }
+  if(answers.ambit === 4) {
+    score += 1;
+  }
+  if(answers.apposite === 1) {
+    score += 1;
+  }*/
   score += answers.tussock === 1 ? 1 : 0;
   score += answers.ambit === 4 ? 1 : 0;
   score += answers.apposite === 1 ? 1 : 0;

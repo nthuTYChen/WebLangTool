@@ -7,12 +7,21 @@ Template.user.helpers({
 });
 
 Template.userIndex.onCreated(function() {
+	this.username = 'TYC';
+	Meteor.subscribe('userProfile', this.username);
 	this.userProfile = {
 		name: '',
 		type: 'student',
 		gender: 'transgender',
 		age: 0
 	};
+});
+
+Template.userIndex.helpers({
+	profileKey: function(key) {
+		let profile = userData.findOne();
+		return profile && profile[key];
+	}
 });
 
 Template.userIndex.events({
@@ -23,6 +32,8 @@ Template.userIndex.events({
 		event.preventDefault();
 		let newProfile = Template.instance().userProfile;
 		newProfile.name = document.getElementById('name').value;
+		Template.instance().username = newProfile.name;
+		console.log(Template.instance().username);
 		newProfile.age = Number(document.getElementById('age').value);
 		Meteor.call('serverWindow', {funcName: 'addUpdateProfile', info: newProfile});
 	},
@@ -73,9 +84,13 @@ Template.vocab.onCreated(function() {
 Template.vocab.events({
 	'click button': backToHome,
 	'click input[type="radio"]': function(event) {
+		//console.log(event);
 		let className = event.target.className;
 		let answer = Number(event.target.value);
 		Template.instance().ansSession[className] = answer;
+		/*console.log(className);
+		console.log(answer);
+		console.log(Template.instance().ansSession);*/
 	},
 	'submit form': function(event) {
 		event.preventDefault();
