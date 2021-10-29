@@ -1,0 +1,86 @@
+<template name="user">
+	{{> Template.dynamic template=userSession}}
+</template>
+
+<template name="userIndex">
+	<form>
+		<p>
+			Name: <input type="text" id="name" required />
+		</p>
+		<p>
+			Gender:
+			<input type="radio" name="gender" value="male" />
+			<label for="male">Male</label>
+			<input type="radio" name="gender" value="female" />
+			<label for="female">Female</label>
+			<input type="radio" name="gender" value="transgender" checked />
+			<label for="transgender">Transgender</label>
+		</p>
+		<p>
+			Age:
+			<input type="number" id="age" min="0" max="120" required />
+		</p>
+		<p>
+			<input type="submit" value="Submit" />
+			<input type="reset" value="Reset" />
+		</p>
+	</form>
+	<button id="testFuncCall">Call Server Function</button>
+	<button id="printProfile">Print Profile</button>
+	<button id="vocab">Vocabulary Master</button>
+	<button id="writing">Writing Geek</button>
+</template>
+
+<template name="vocab">
+	<style>
+		body {
+			margin-left: 10%;
+		}
+	</style>
+	<form>
+		<h1>Vocabulary Test</h1>
+		<p>
+			Name: <input type="text" id="name" required />
+		</p>
+		<p>
+			<h3>tussock</h3>
+			<input type="radio" class="tussock" name="tussock" value="1" />
+			<label for="1">tuft</label><br/>
+			<input type="radio" class="tussock" name="tussock" value="2" />
+			<label for="2">tune</label><br/>
+			<input type="radio" class="tussock" name="tussock" value="3" />
+			<label for="3">tussle</label><br/>
+			<input type="radio" class="tussock" name="tussock" value="4" />
+			<label for="1">tusk</label>
+		</p>
+		<p>
+			<h3>ambit</h3>
+			
+			<input type="radio" class="ambit" name="ambit" value="1" />
+			<label for="1">a parallelogram with four equal sides</label><br/>
+			<input type="radio" class="ambit" name="ambit" value="2" />
+			<label for="2">the quality of affording easy familiarity and sociability</label><br/>
+			<input type="radio" class="ambit" name="ambit" value="3" />
+			<label for="3">energy in a system no longer available for mechanical work</label><br/>
+			<input type="radio" class="ambit" name="ambit" value="4" />
+			<label for="4">an area in which something operates or has power or control</label>
+		</p>
+		<p>
+			<h3>apposite</h3>
+			<input type="radio" class="apposite" name="apposite" value="1" />
+			<label for="1">illogical</label><br/>
+			<input type="radio" class="apposite" name="apposite" value="2" />
+			<label for="2">apt</label><br/>
+			<input type="radio" class="apposite" name="apposite" value="3" />
+			<label for="3">nuclear</label><br/>
+			<input type="radio" class="apposite" name="apposite" value="4" />
+			<label for="4">joint</label>
+		</p>
+		<input type="submit" value="Submit" />
+	</form>
+	<button>User Home</button>
+</template>
+
+<template name="writing">
+	<button>User Home</button>
+</template>
