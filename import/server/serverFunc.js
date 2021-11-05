@@ -13,12 +13,36 @@ export const printProfile = function (profile) {
 };
 
 export const addUpdateProfile = function (profile) {
-  userData.update(
+  if(profile.type === 'student') {
+    userData.update(
       {name: profile.name, type: profile.type},
       {$set: {gender: profile.gender, age: profile.age}, 
         $setOnInsert: {score: 0, createdAt: new Date()}},
       {upsert: true}
     );
+  }
+  else {
+    userData.update(
+      {name: profile.name, type: profile.type},
+      {$setOnInsert: {students: [], createdAt: new Date()}},
+      {upsert: true}
+    );
+  }
+};
+
+export const addStudentName = function(addInfo) {
+  let studentProfile = userData.findOne({name: addInfo.studentName, type: 'student'});
+  let lecturerProfile = userData.findOne({name: addInfo.lecturerName, type: 'lecturer'});
+  if(studentProfile && lecturerProfile) {
+    userData.update(
+      {name: addInfo.lecturerName, type: 'lecturer'},
+      {$addToSet: {students: addInfo.studentName}}
+    );
+    userData.update(
+      {name: addInfo.studentName, type: 'student'},
+      {$set: {lecturer: addInfo.lecturerName}}
+    );
+  }
 };
 
 export const checkAns = function(answers) {

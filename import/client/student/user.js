@@ -1,3 +1,5 @@
+import { Tracker } from 'meteor/tracker';
+
 import './user.html';
 
 Template.user.helpers({
@@ -7,8 +9,10 @@ Template.user.helpers({
 });
 
 Template.userIndex.onCreated(function() {
-	this.username = 'TYC';
-	Meteor.subscribe('userProfile', this.username);
+	//this.username = 'TYC';
+	Tracker.autorun(function() {
+		Meteor.subscribe('userProfile', Session.get('username'));
+	});
 	this.userProfile = {
 		name: '',
 		type: 'student',
@@ -32,8 +36,7 @@ Template.userIndex.events({
 		event.preventDefault();
 		let newProfile = Template.instance().userProfile;
 		newProfile.name = document.getElementById('name').value;
-		Template.instance().username = newProfile.name;
-		console.log(Template.instance().username);
+		Session.set('username', newProfile.name);
 		newProfile.age = Number(document.getElementById('age').value);
 		Meteor.call('serverWindow', {funcName: 'addUpdateProfile', info: newProfile});
 	},

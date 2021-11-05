@@ -1,0 +1,16 @@
+<template name="user">
+	{{> Template.dynamic template=userSession}}
+</template>
+
+<template name="userIndex">
+	<form>
+		Lecturer Name: <input type="text" id="name" /><br/>
+		<input type="submit" value="Submit" />
+	</form>
+	<p>
+		Current student(s): 
+	</p>
+	Add student: <input type="text" id="studentName" />
+	<button id="addStudent">Add</button><br/>
+	<button id="writing">Writing Geek</button>
+</template>
