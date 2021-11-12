@@ -4,13 +4,33 @@
 
 <template name="userIndex">
 	<form>
-		Lecturer Name: <input type="text" id="name" /><br/>
+		Lecturer Name: <input type="text" id="name" value="{{lecturer}}" /><br/>
 		<input type="submit" value="Submit" />
 	</form>
 	<p>
 		Current student(s): 
+		{{#each value in students}}
+			{{value}}, 
+		{{else}}
+			None.
+		{{/each}}
 	</p>
 	Add student: <input type="text" id="studentName" />
 	<button id="addStudent">Add</button><br/>
 	<button id="writing">Writing Geek</button>
+</template>
+
+<template name="writing">
+	Students:
+	<select>
+		<option value=""></option>
+		{{#each name in students}}
+			<option value="{{name}}">{{name}}</option>
+		{{/each}}
+	</select><br/>
+	<p>
+		<input type="text" id="newProject" />
+		<button id="addProject">Add a new project</button>
+	</p>
+	<button id="userIndex">Home</button>
 </template>

@@ -45,6 +45,36 @@ export const addStudentName = function(addInfo) {
   }
 };
 
+export const addWritingProject = function(projectInfo) {
+  writingProjects.update(
+    {title: projectInfo.title, student: projectInfo.studentName, lecturer: projectInfo.lecturerName},
+    {$setOnInsert: {startedAt: new Date(), open: true}},
+    {upsert: true}
+  );
+};
+
+export const submitReplyWriting = function(writingInfo) {
+  let project = writingProjects.findOne({title: writingInfo.project});
+  if(project && project.open === true) {
+    let wordCount = writingInfo.texts.split(' ').length;
+    studentWritings.insert({
+      project: writingInfo.project,
+      texts: writingInfo.texts,
+      wordCount: wordCount,
+      userType: writingInfo.type,
+      student: writingInfo.studentName,
+      lecturer: writingInfo.lecturerName,
+      comments: '',
+      createdAt: new Date(),
+      lastEditedAt: null
+    });
+  }
+};
+
+export const closeWritingProject = function(projectTitle) {
+  writingProjects.update({title: projectTitle}, {$set: {open: false}});
+};
+
 export const checkAns = function(answers) {
   let score = 0;
   /*if(answers.tussock === 1) {

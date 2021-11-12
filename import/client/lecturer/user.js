@@ -18,6 +18,17 @@ Template.userIndex.onCreated(function() {
 	});
 });
 
+Template.userIndex.helpers({
+	lecturer: function() {
+		let userProfile = userData.findOne();
+		return userProfile && userProfile.name;
+	},
+	students: function() {
+		let userProfile = userData.findOne();
+		return userProfile && userProfile.students;
+	}
+});
+
 Template.userIndex.events({
 	'submit form': function(event) {
 		event.preventDefault();
@@ -36,5 +47,50 @@ Template.userIndex.events({
 			 }
 			}
 		);
+	},
+	'click button#writing': function() {
+		Session.set('userSession', 'writing');
+	}
+});
+
+Template.writing.onCreated(function() {
+	Tracker.autorun(function() {
+		let username = Session.get('username');
+		let studentName = Session.get('studentName');
+		let projectName = Session.get('projectName');
+		Meteor.subscribe('userData', username);
+		Meteor.subscribe('writingProjects', studentName);
+		Meteor.subscribe('studentWritings', studentName, projectName);
+	});
+});
+
+Template.writing.helpers({
+	students: function() {
+		let userProfile = userData.findOne();
+		return userProfile && userProfile.students;
+	}
+});
+
+Template.writing.events({
+	'change select': function(event) {
+		let studentName = event.target.value;
+		Session.set('studentName', studentName);
+	},
+	'click button#addProject': function() {
+		let projectTitle = document.getElementById('newProject').value;
+		Meteor.call('serverWindow',
+			{
+				funcName: 'addWritingProject', 
+				info: {
+					title: projectTitle,
+					lecturerName: Session.get('username'),
+					studentName: Session.get('studentName')
+				}
+			}
+		);
+	},
+	'click button#userIndex': function() {
+		Session.set('userSession', 'userIndex');
+		Session.set('studentName', '');
 	}
 });

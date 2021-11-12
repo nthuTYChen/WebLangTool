@@ -40,6 +40,16 @@ Template.userIndex.events({
 		newProfile.age = Number(document.getElementById('age').value);
 		Meteor.call('serverWindow', {funcName: 'addUpdateProfile', info: newProfile});
 	},
+	'click button#assignLecturer': function() {
+		let name = document.getElementById('lecturerName').value;
+		Meteor.call('serverWindow', {
+			funcName: 'addStudentName',
+			info: {
+				studentName: Session.get('username'),
+				lecturerName: name
+			}
+		});
+	},
 	'click button#vocab': function() {
 		Session.set('userSession', 'vocab');
 	},
