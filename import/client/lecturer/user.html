@@ -21,6 +21,18 @@
 </template>
 
 <template name="writing">
+	<style>
+		article {
+			margin: 5px 0;
+			background-color: green;
+			color: white;
+			font-family: Montserrat, sans-serif;
+		}
+
+		article:hover {
+			cursor: pointer;
+		}
+	</style>
 	Students:
 	<select>
 		<option value=""></option>
@@ -32,5 +44,12 @@
 		<input type="text" id="newProject" />
 		<button id="addProject">Add a new project</button>
 	</p>
+	{{#each allProjects}}
+		<article>
+			Title: {{title}}<br/>
+			Started At: {{startedAt}}<br/>
+			Open: {{open}}
+		</article>
+	{{/each}}
 	<button id="userIndex">Home</button>
 </template>

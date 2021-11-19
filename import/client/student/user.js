@@ -114,7 +114,39 @@ Template.vocab.events({
 	}
 });
 
+Template.writing.onCreated(function() {
+	Tracker.autorun(function() {
+		Meteor.subscribe('writingProjects', Session.get('username'));
+		Meteor.subscribe('studentWritings', Session.get('username'), Session.get('projectName'));
+		let forms = document.querySelectorAll('article > form');
+		for(let i=0 ; i<forms.length ; i++) {
+			forms[i].style.display = 'none';
+		}
+		if(!studentWritings.findOne()) {
+			Tracker.afterFlush(function() {
+				let articleId = Session.get('projectName');
+				let article = document.getElementById(articleId);
+				let form = article.querySelector('form');
+				form.style.display = 'block';
+			});
+		}
+	});
+});
+
+Template.writing.helpers({
+	allProjects: function() {
+		return writingProjects.find({});
+	},
+	allWritings: function(projectTitle) {
+		return studentWritings.find({title: projectTitle}, {sort: {createdAt: -1}});
+	}
+});
+
 Template.writing.events({
+	'click article': function(event) {
+		let title = event.target.id;
+		Session.set('projectName', title);
+	},
 	'click button': backToHome
 });
 

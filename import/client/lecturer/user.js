@@ -68,6 +68,9 @@ Template.writing.helpers({
 	students: function() {
 		let userProfile = userData.findOne();
 		return userProfile && userProfile.students;
+	},
+	allProjects: function() {
+		return writingProjects.find({});
 	}
 });
 
