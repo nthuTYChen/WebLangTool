@@ -15,5 +15,11 @@ Meteor.publish('writingProjects', function(studentName) {
 });
 
 Meteor.publish('studentWritings', function(studentName, projectTitle) {
-	return studentWritings.find({student: studentName, project: projectTitle});
+	return studentWritings.find({student: studentName, project: projectTitle}, 
+								{fields: {texts: 0, comments: 0}}
+	);
+});
+
+Meteor.publish('studentWritingsById', function(id) {
+	return studentWritings.find({_id: id});
 });

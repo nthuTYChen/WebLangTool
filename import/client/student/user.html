@@ -101,6 +101,19 @@
 		article:hover {
 			cursor: pointer;
 		}
+
+		section {
+			margin: 3px 0;
+			font-size: 70%;
+		}
+
+		section.student {
+			background-color: blue;
+		}
+
+		section.lecturer {
+			background-color: crimson;
+		}
 	</style>
 	{{#each project in allProjects}}
 		<article id="{{project.title}}">
@@ -108,7 +121,11 @@
 			Started At: {{project.startedAt}}<br/>
 			Open: {{project.open}}
 			{{#each writing in allWritings project.title}}
-			
+				<section class="{{writing.userType}}" id="{{writing._id}}">
+					Word Count: {{writing.wordCount}}<br/>
+					Submitted at: {{writing.createdAt}}<br/>
+					Last Edited at: {{writing.lastEditedAt}}
+				</section>
 			{{else}}
 				<form style="display: none;">
 					<textarea style="width: 100%; height: 150px;"></textarea><br/>
@@ -119,4 +136,26 @@
 		</article>
 	{{/each}}
 	<button>User Home</button>
+</template>
+
+<template name="writingTools">
+	<style>
+		textarea {
+			width: 200px;
+			height: 100px;
+		}
+	</style>
+	<h2>Project Title: {{writingRec "project"}}</h2>
+	<h3>Writing ID: {{writingRec "_id"}}</h3>
+	<p>
+		Body Texts:<br/>
+		<textarea>{{writingRec "texts"}}</textarea><br/>
+		Lecturer's comments:<br/>
+		<textarea readonly>{{writingRec "comments"}}</textarea><br/>
+		Time of Submission: {{writingRec "createdAt"}}<br/>
+		Last Edited at: {{writingRec "lastEditedAt"}}
+	</p>
+	<button id="submitNew">Submit changes as a new entry</button>
+	<button id="save">Save changes</button>
+	<button id="backToProjects">Projects</button>
 </template>

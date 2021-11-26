@@ -57,17 +57,29 @@ export const submitReplyWriting = function(writingInfo) {
   let project = writingProjects.findOne({title: writingInfo.project});
   if(project && project.open === true) {
     let wordCount = writingInfo.texts.split(' ').length;
-    studentWritings.insert({
-      project: writingInfo.project,
-      texts: writingInfo.texts,
-      wordCount: wordCount,
-      userType: writingInfo.type,
-      student: writingInfo.studentName,
-      lecturer: writingInfo.lecturerName,
-      comments: '',
-      createdAt: new Date(),
-      lastEditedAt: null
-    });
+    if(writingInfo.save) {
+      studentWritings.update({_id: writingInfo.id}, 
+                             {$set: 
+                                {texts: writingInfo.texts, 
+                                  wordCount: wordCount, 
+                                  lastEditedAt: new Date()
+                                }
+                             }
+      );
+    }
+    else {
+      studentWritings.insert({
+        project: writingInfo.project,
+        texts: writingInfo.texts,
+        wordCount: wordCount,
+        userType: writingInfo.type,
+        student: writingInfo.studentName,
+        lecturer: writingInfo.lecturerName,
+        comments: '',
+        createdAt: new Date(),
+        lastEditedAt: null
+      });
+    }
   }
 };
 
