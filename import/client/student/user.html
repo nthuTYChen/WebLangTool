@@ -120,6 +120,9 @@
 			Title: {{project.title}}<br/>
 			Started At: {{project.startedAt}}<br/>
 			Open: {{project.open}}
+			<p>
+				{{project.description}}
+			</p>
 			{{#each writing in allWritings project.title}}
 				<section class="{{writing.userType}}" id="{{writing._id}}">
 					Word Count: {{writing.wordCount}}<br/>

@@ -47,25 +47,53 @@ export const addStudentName = function(addInfo) {
 
 export const addWritingProject = function(projectInfo) {
   writingProjects.update(
-    {title: projectInfo.title, student: projectInfo.studentName, lecturer: projectInfo.lecturerName},
+    {title: projectInfo.title, 
+     description: projectInfo.description,
+     student: projectInfo.studentName, 
+     lecturer: projectInfo.lecturerName
+    },
     {$setOnInsert: {startedAt: new Date(), open: true}},
     {upsert: true}
   );
 };
 
+export const removeWritingProject = function(projectInfo) {
+  writingProjects.remove({
+    title: projectInfo.title, 
+    student: projectInfo.studentName, 
+    lecturer: projectInfo.lecturerName
+  });
+  studentWritings.remove({
+    project: projectInfo.title, 
+    student: projectInfo.studentName, 
+    lecturer: projectInfo.lecturerName
+  });
+};
+
 export const submitReplyWriting = function(writingInfo) {
   let project = writingProjects.findOne({title: writingInfo.project});
   if(project && project.open === true) {
-    let wordCount = writingInfo.texts.split(' ').length;
+    let wordCount = writingInfo.texts && writingInfo.texts.split(' ').length;
     if(writingInfo.save) {
-      studentWritings.update({_id: writingInfo.id}, 
+      if(writingInfo.comments) {
+        studentWritings.update({_id: writingInfo.id}, 
+                             {$set: 
+                                {comments: writingInfo.comments, 
+                                  lastEditedAt: new Date()
+                                }
+                             }
+        );
+      }
+      else {
+        studentWritings.update({_id: writingInfo.id}, 
                              {$set: 
                                 {texts: writingInfo.texts, 
                                   wordCount: wordCount, 
                                   lastEditedAt: new Date()
                                 }
                              }
-      );
+        );
+      }
     }
     else {
       studentWritings.insert({

@@ -71,6 +71,9 @@ Template.writing.helpers({
 	},
 	allProjects: function() {
 		return writingProjects.find({});
+	},
+	allWritings: function(title) {
+		return studentWritings.find({project: title}, {sort: {createdAt: -1}});
 	}
 });
 
@@ -81,9 +84,28 @@ Template.writing.events({
 	},
 	'click button#addProject': function() {
 		let projectTitle = document.getElementById('newProject').value;
+		let projectDes = document.getElementById('newProjectDes').value;
 		Meteor.call('serverWindow',
 			{
 				funcName: 'addWritingProject', 
+				info: {
+					title: projectTitle,
+					description: projectDes,
+					lecturerName: Session.get('username'),
+					studentName: Session.get('studentName')
+				}
+			}
+		);
+	},
+	'click article': function(event) {
+		let projectTitle = event.target.id;
+		Session.set('projectName', projectTitle);
+	},
+	'click span': function(event) {
+		let projectTitle = event.target.id;
+		Meteor.call('serverWindow', 
+			{
+				funcName: 'removeWritingProject',
 				info: {
 					title: projectTitle,
 					lecturerName: Session.get('username'),
@@ -92,8 +114,60 @@ Template.writing.events({
 			}
 		);
 	},
+	'click article > section': function(event) {
+ 		event.stopPropagation();
+ 		let docId = event.target.id;
+ 		Session.set('writingID', docId);
+ 		Session.set('userSession', 'writingTools');
+	},
 	'click button#userIndex': function() {
 		Session.set('userSession', 'userIndex');
 		Session.set('studentName', '');
+	}
+});
+
+Template.writingTools.onCreated(function() {
+	Tracker.autorun(function() {
+		Meteor.subscribe('studentWritingsById', Session.get('writingID'));
+	});
+});
+
+Template.writingTools.helpers({
+	writingRec: function(key) {
+		let doc = studentWritings.findOne({_id: Session.get('writingID')});
+		return doc && doc[key];
+	}
+});
+
+Template.writingTools.events({
+	'click button#submitNew': function() {
+		let bodyTextarea = document.querySelector('p > textarea');
+		let bodyTexts = bodyTextarea.value;
+		Meteor.call('serverWindow', {
+			funcName: 'submitReplyWriting',
+			info: {
+				project: Session.get('projectName'),
+				texts: bodyTexts,
+				type: 'lecturer',
+				studentName: Session.get('studentName'),
+				lecturerName: Session.get('username')
+			}
+		});
+		Session.set('userSession', 'writing');
+	},
+	'click button#save': function() {
+		let bodyTextareas = document.querySelectorAll('p > textarea');
+		let comments = bodyTextareas[1].value;
+		Meteor.call('serverWindow', {funcName: 'submitReplyWriting',
+									 info: {
+									 	id: Session.get('writingID'),
+									 	comments: comments,
+									 	save: true
+									 }}
+		);
+		Session.set('userSession', 'writing');
+	},
+	'click button#backToProjects': function() {
+		Session.set('userSession', 'writing');
 	}
 });

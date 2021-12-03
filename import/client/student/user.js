@@ -126,8 +126,10 @@ Template.writing.onCreated(function() {
 			Tracker.afterFlush(function() {
 				let articleId = Session.get('projectName');
 				let article = document.getElementById(articleId);
-				let form = article.querySelector('form');
-				form.style.display = 'block';
+				if(article) {
+					let form = article.querySelector('form');
+					form.style.display = 'block';
+				}
 			});
 		}
 	});
@@ -188,7 +190,7 @@ Template.writingTools.onCreated(function() {
 
 Template.writingTools.helpers({
 	writingRec: function(key) {
-		let doc = studentWritings.findOne();
+		let doc = studentWritings.findOne({_id: Session.get('writingID')});
 		return doc && doc[key];
 	}
 });
