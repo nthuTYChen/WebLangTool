@@ -32,6 +32,33 @@
 		article:hover {
 			cursor: pointer;
 		}
+
+		article > p {
+			font-size: 70%;
+			font-family: Scheherazade New, serif;
+		}
+
+		article > span {
+			float: right;
+			font-weight: bold;
+		}
+
+		article > span:hover {
+			color: red;
+		}
+
+		section {
+			margin: 3px 0;
+			font-size: 70%;
+		}
+
+		section.student {
+			background-color: blue;
+		}
+
+		section.lecturer {
+			background-color: crimson;
+		}
 	</style>
 	Students:
 	<select>
@@ -41,15 +68,49 @@
 		{{/each}}
 	</select><br/>
 	<p>
-		<input type="text" id="newProject" />
+		Title: <input type="text" id="newProject" /><br/>
+		Description: <input type="text" id="newProjectDes" /><br/>
 		<button id="addProject">Add a new project</button>
 	</p>
-	{{#each allProjects}}
-		<article>
-			Title: {{title}}<br/>
-			Started At: {{startedAt}}<br/>
-			Open: {{open}}
+	{{#each project in allProjects}}
+		<article id="{{project.title}}">
+			<span id="{{project.title}}">X</span>
+			Title: {{project.title}}<br/>
+			Started At: {{project.startedAt}}<br/>
+			Open: {{project.open}}
+			<p>
+				{{project.description}}
+			</p>
+			{{#each writing in allWritings project.title}}
+				<section class="{{writing.userType}}" id="{{writing._id}}">
+					Word Count: {{writing.wordCount}}<br/>
+					Submitted at: {{writing.createdAt}}<br/>
+					Last Edited at: {{writing.lastEditedAt}}
+				</section>
+			{{/each}}
 		</article>
 	{{/each}}
 	<button id="userIndex">Home</button>
+</template>
+
+<template name="writingTools">
+	<style>
+		textarea {
+			width: 200px;
+			height: 100px;
+		}
+	</style>
+	<h2>Project Title: {{writingRec "project"}}</h2>
+	<h3>Writing ID: {{writingRec "_id"}}</h3>
+	<p>
+		Body Texts:<br/>
+		<textarea>{{writingRec "texts"}}</textarea><br/>
+		Lecturer's comments:<br/>
+		<textarea>{{writingRec "comments"}}</textarea><br/>
+		Time of Submission: {{writingRec "createdAt"}}<br/>
+		Last Edited at: {{writingRec "lastEditedAt"}}
+	</p>
+	<button id="submitNew">Reply as a new entry</button>
+	<button id="save">Save comments</button>
+	<button id="backToProjects">Projects</button>
 </template>
