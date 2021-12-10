@@ -1,0 +1,65 @@
+<head>
+  <title>English Powerhouse</title>
+</head>
+
+<body>
+  {{> index}}
+</body>
+
+<template name="index">
+  {{#if currentUser}}
+    Logged in!
+  {{else}}
+    {{> Template.dynamic template=browseSession}}
+  {{/if}}
+</template>
+
+<template name="welcome">
+  <article style="text-align: center;">
+    <h1>English Powerhouse!</h1>
+    <button id="signIn">Sign In</button>
+    <button id="signUp">Sign Up</button>
+  </article>
+</template>
+
+<template name="signUp">
+  <form>
+    <h1>Sign up a new account</h1>
+    <p>
+      Name: <input type="text" id="name" required />
+    </p>
+    <p>
+      Age: <input type="number" id="age" required />
+    </p>
+    <p>
+      Gender:
+      <input type="radio" name="gender" value="male" />
+      <label for="male">Male</label>
+      <input type="radio" name="gender" value="female" />
+      <label for="female">Female</label>
+      <input type="radio" name="gender" value="transgender" />
+      <label for="transgender">Transgender</label>
+    </p>
+    <p>
+      Type:
+      <input type="radio" name="type" value="student" />
+      <label for="student">Student</label>
+      <input type="radio" name="type" value="lecturer" />
+      <label for="lecturer">Lecturer</label>
+    </p>
+    <p>
+      Email (Account):
+      <input type="email" id="email" required />
+    </p>
+    <p>
+      Password:
+      <input type="password" id="password" required />
+    </p>
+    <input type="submit" id="submit" value="Submit" />
+    <input type="reset" id="reset" value="Reset" />
+  </form>
+</template>
+
+<template name="signedUp">
+  <h1>Registration complete. Please check your e-mail.</h1>
+</template>
