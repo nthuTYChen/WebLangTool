@@ -8,7 +8,7 @@
 
 <template name="index">
   {{#if currentUser}}
-    Logged in!
+    {{> Template.dynamic template=userHome}}
   {{else}}
     {{> Template.dynamic template=browseSession}}
   {{/if}}
@@ -62,4 +62,19 @@
 
 <template name="signedUp">
   <h1>Registration complete. Please check your e-mail.</h1>
+</template>
+
+<template name="successfulVerify">
+  <h1>Account verified successfully</h1>
+  <button>Sign In</button>
+</template>
+
+<template name="signIn">
+  <h1>Sign In</h1>
+  <form>
+    E-mail: <input type="email" id="username" required /><br/>
+    Password: <input type="password" id="password" required /><br/>
+    <input type="submit" value="Log In" />
+    <input type="reset" value="Reset" />
+  </form>
 </template>

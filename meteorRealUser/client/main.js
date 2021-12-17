@@ -6,13 +6,49 @@ import { Template } from 'meteor/templating';
 import './lib/session.js';
 import './main.html';
 
+Template.body.onCreated(function() {
+	let verifyToken = Accounts._verifyEmailToken;
+	// Start the verification process only when there's a verification token
+	if(verifyToken) {
+		Accounts.verifyEmail(verifyToken, function(error) {
+			if(error.reason === 'Login forbidden') {
+				Session.set('browseSession', 'successfulVerify');
+			}
+ 			else if(error) {
+ 				alert('Invalid verification link!');
+ 			}
+ 			else {
+ 				Session.set('browseSession', 'successfulVerify');
+ 			}
+		});
+	}
+	//console.log(Accounts._verifyEmailToken);
+});
+
 Template.index.helpers({
+	userHome: function() {
+		// Retrieve the data of the user who is currently logged in
+		let userData = Meteor.user();
+		// Try to import different files only when a user is logged in
+		if(userData) {
+			if(userData.profile.type === 'student') {
+				import('/import/client/student/user.js');
+			}
+			else {
+				import('/import/client/lecturer/user.js');
+			}
+		}
+		return Session.get('browseSession');
+	},
 	browseSession: function() {
 		return Session.get('browseSession');
 	}
 });
 
 Template.welcome.events({
+	'click button#signIn': function() {
+ 		Session.set('browseSession', 'signIn');
+	},
 	'click button#signUp': function() {
 		Session.set('browseSession', 'signUp');
 	}
@@ -22,6 +58,7 @@ Template.signUp.onCreated(function() {
  	this.regInfo = {
  		username: null,
  		password: null,
+ 		email: null,
  		profile: {
  			realName: null,
  			age: null,
@@ -65,5 +102,28 @@ Template.signUp.events({
 				Session.set('browseSession', 'signedUp');
 			}
 		});
+	}
+});
+
+Template.successfulVerify.events({
+	'click button': function() {
+ 		Session.set('browseSession', 'signIn');
+	},
+});
+
+Template.signIn.events({
+	'submit form': function(event) {
+ 		event.preventDefault();
+ 		let username = document.getElementById('username').value;
+ 		let password = document.getElementById('password').value;
+
+ 		Meteor.loginWithPassword(username, password, function(error) {
+ 			if(error) {
+ 				alert('Incorrect username/password!');
+ 			}
+ 			else {
+ 				Session.set('browseSession', 'userHome');
+ 			}
+ 		});
 	}
 });
