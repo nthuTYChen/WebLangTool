@@ -1,11 +1,11 @@
-<template name="userHome">
+<template name="userHome_Lecturer">
 	<h1>Lecturer: {{username}}</h1>
 	{{> Template.dynamic template=userSession}}
 	<button id="listening">Listening Task</button>
 	<button id="logout">Log Out</button>
 </template>
 
-<template name="userIndex">
+<template name="userIndex_Lecturer">
 	<p>
 		Age: {{profile "age"}}<br/>
 		Students: 
@@ -17,7 +17,7 @@
 	</form>
 </template>
 
-<template name="listening">
+<template name="listening_Lecturer">
 	<h1>Listening Tasks</h1>
 	<form>
 		Title: <input type="text" id="title" /><br/>

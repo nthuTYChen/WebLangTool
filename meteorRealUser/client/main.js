@@ -23,22 +23,11 @@ Template.body.onCreated(function() {
  			}
 		});
 	}
-	//console.log(Accounts._verifyEmailToken);
 });
 
 Template.index.helpers({
 	userHome: function() {
 		// Retrieve the data of the user who is currently logged in
-		let userData = Meteor.user();
-		// Try to import different files only when a user is logged in
-		if(userData) {
-			if(userData.profile.type === 'student') {
-				import('/import/client/student/user.js');
-			}
-			else {
-				import('/import/client/lecturer/user.js');
-			}
-		}
 		return Session.get('browseSession');
 	},
 	browseSession: function() {
@@ -123,7 +112,23 @@ Template.signIn.events({
  				alert('Incorrect username/password!');
  			}
  			else {
- 				Session.set('browseSession', 'userHome');
+ 				let userData = Meteor.user();
+				// Try to import different files and set the session variables 
+				// to load defaul user templates only when a user is logged in
+				if(userData) {
+					if(userData.profile.type === 'student') {
+						import('/import/client/student/user.js').then(function() {
+							Session.set('userSession', 'userIndex_Student');
+							Session.set('browseSession', 'userHome_Student');
+						});
+					}
+					else {
+						import('/import/client/lecturer/user.js').then(function() {
+							Session.set('userSession', 'userIndex_Lecturer');
+							Session.set('browseSession', 'userHome_Lecturer');
+						});
+					}
+				}
  			}
  		});
 	}

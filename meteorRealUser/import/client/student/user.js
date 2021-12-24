@@ -2,7 +2,7 @@ import { Tracker } from 'meteor/tracker';
 
 import './user.html';
 
-Template.userHome.helpers({
+Template.userHome_Student.helpers({
 	realName: function() {
  		return Meteor.user() && Meteor.user().profile.realName;
 	},
@@ -11,9 +11,9 @@ Template.userHome.helpers({
 	}
 });
 
-Template.userHome.events({
+Template.userHome_Student.events({
 	'click button#listening': function() {
- 		Session.set('userSession', 'listening');
+ 		Session.set('userSession', 'listening_Student');
 	},
 	'click button#logout': function() {
 		Meteor.logout();
@@ -21,7 +21,7 @@ Template.userHome.events({
 	}
 });
 
-Template.userIndex.helpers({
+Template.userIndex_Student.helpers({
 	username: function() {
 		return Meteor.user() && Meteor.user().username;
 	},
@@ -31,20 +31,20 @@ Template.userIndex.helpers({
 	}
 });
 
-Template.listening.onCreated(function() {
+Template.listening_Student.onCreated(function() {
  	Tracker.autorun(function() {
  		Meteor.subscribe('listeningTasks');
  	});
 });
 
-Template.listening.helpers({
+Template.listening_Student.helpers({
 	tasks: function() {
 		return listeningTasks.find({});
 	}
 });
 
-Template.listening.events({
+Template.listening_Student.events({
 	'click button': function() {
-		Session.set('userSession', 'userIndex');
+		Session.set('userSession', 'userIndex_Student');
 	}
 });
