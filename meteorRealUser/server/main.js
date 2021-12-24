@@ -2,6 +2,9 @@ import { Accounts } from 'meteor/accounts-base';
 import { Email } from 'meteor/email';
 import { Meteor } from 'meteor/meteor';
 
+import '/import/server/databases.js';
+import serverFunc from '/import/server/serverFunc.js';
+
 Meteor.startup(function() {
   let username = 'shaferain@live.com';
   let password = 'xsmtpsib-9c4dc6ee1ebf8390735a813d3547cab7db3ab44a10d1db27b491a3a844635e4f-HFWxJwp7Xr4Zm2Df';
@@ -50,4 +53,19 @@ Accounts.validateLoginAttempt(function(attempt) {
     return false;
   }
   return true;
+});
+
+Meteor.methods({
+  serverWindow: function(clientInfo) { // clientInfo.info & clientInfo.funcName
+    let userData = Meteor.user(); // Get user info on the server side
+    // Do the rest if the user info is found
+    if(userData) {
+      clientInfo.info.user = {};
+      clientInfo.info.user.userId = userData._id;
+      clientInfo.info.user.realName = userData.profile.realName;
+      clientInfo.info.user.email = userData.username;
+      clientInfo.info.user.type = userData.profile.type;
+      serverFunc[clientInfo.funcName](clientInfo.info);
+    }
+  }
 });

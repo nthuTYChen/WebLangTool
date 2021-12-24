@@ -4,6 +4,7 @@ import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 
 import './lib/session.js';
+import './lib/databases.js';
 import './main.html';
 
 Template.body.onCreated(function() {

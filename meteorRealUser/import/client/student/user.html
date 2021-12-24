@@ -1,7 +1,8 @@
 <template name="userHome">
 	<h1>Student User: {{realName}}</h1>
 	{{> Template.dynamic template=userSession}}
-	<button>Log Out</button>
+	<button id="listening">Listening Tasks</button>
+	<button id="logout">Log Out</button>
 </template>
 
 <template name="userIndex">
@@ -13,4 +14,27 @@
 		Gender: {{profile "gender"}}<br/>
 		Lecturer: {{profile "lecturer"}}
 	</p>
+	<form>
+		Assign to lecturer (name):
+		<input type="text" id="lecturerName" />
+		<input type="submit" id="submitAssign" value="Submit" />
+	</form>
+</template>
+
+<template name="listening">
+	<h1>Listening Trainings</h1>
+	{{#each tasks}}
+		<div id="{{_id}}">
+			Title: {{title}}<br/>
+			Description: {{description}}<br/>
+			<audio controls>
+				<source src="http://localhost:3000/audios/{{filename}}" type="audio/mpeg" />
+			</audio>
+			<textarea></textarea><br/>
+			<button>Submit</button>
+		</div>
+	{{else}}
+		No tasks at all.
+	{{/each}}
+	<button>Home</button>
 </template>
