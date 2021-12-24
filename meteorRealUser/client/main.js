@@ -114,19 +114,17 @@ Template.signIn.events({
  				let userData = Meteor.user();
 				// Try to import different files and set the session variables 
 				// to load defaul user templates only when a user is logged in
-				if(userData) {
-					if(userData.profile.type === 'student') {
-						import('/import/client/student/user.js').then(function() {
-							Session.set('userSession', 'userIndex_Student');
-							Session.set('browseSession', 'userHome_Student');
-						});
-					}
-					else {
-						import('/import/client/lecturer/user.js').then(function() {
-							Session.set('userSession', 'userIndex_Lecturer');
-							Session.set('browseSession', 'userHome_Lecturer');
-						});
-					}
+				if(userData.profile.type === 'student') {
+					import('/import/client/student/user.js').then(function() {
+						Session.set('userSession', 'userIndex_Student');
+						Session.set('browseSession', 'userHome_Student');
+					});
+				}
+				else {
+					import('/import/client/lecturer/user.js').then(function() {
+						Session.set('userSession', 'userIndex_Lecturer');
+						Session.set('browseSession', 'userHome_Lecturer');
+					});
 				}
  			}
  		});
