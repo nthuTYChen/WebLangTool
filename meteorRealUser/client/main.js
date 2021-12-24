@@ -27,7 +27,6 @@ Template.body.onCreated(function() {
 
 Template.index.helpers({
 	userHome: function() {
-		// Retrieve the data of the user who is currently logged in
 		return Session.get('browseSession');
 	},
 	browseSession: function() {
