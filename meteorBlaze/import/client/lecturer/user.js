@@ -62,6 +62,7 @@ Template.writing.onCreated(function() {
 		Meteor.subscribe('writingProjects', studentName);
 		Meteor.subscribe('studentWritings', studentName, projectName);
 	});
+	this.projectRating = '';
 });
 
 Template.writing.helpers({
@@ -78,9 +79,12 @@ Template.writing.helpers({
 });
 
 Template.writing.events({
-	'change select': function(event) {
+	'change select#studentList': function(event) {
 		let studentName = event.target.value;
 		Session.set('studentName', studentName);
+	},
+	'change select.projectRatings': function(event) {
+ 		Template.instance().projectRating = event.target.value;
 	},
 	'click button#addProject': function() {
 		let projectTitle = document.getElementById('newProject').value;
@@ -96,6 +100,16 @@ Template.writing.events({
 				}
 			}
 		);
+	},
+	'click button.closeProject': function(event) {
+ 		let closeTarget = event.target.id;
+ 		Meteor.call('serverWindow', {
+ 			funcName: 'closeWritingProject', 
+ 			info: {
+ 				target: closeTarget,
+ 				rating: Template.instance().projectRating
+ 			}
+ 		});
 	},
 	'click article': function(event) {
 		let projectTitle = event.target.id;
@@ -136,6 +150,10 @@ Template.writingTools.helpers({
 	writingRec: function(key) {
 		let doc = studentWritings.findOne({_id: Session.get('writingID')});
 		return doc && doc[key];
+	},
+	projectOpen: function() {
+		let project = writingProjects.findOne({title: Session.get('projectName')});
+		return project && project.open;
 	}
 });
 

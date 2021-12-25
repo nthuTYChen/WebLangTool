@@ -192,6 +192,10 @@ Template.writingTools.helpers({
 	writingRec: function(key) {
 		let doc = studentWritings.findOne({_id: Session.get('writingID')});
 		return doc && doc[key];
+	},
+	projectOpen: function() {
+		let project = writingProjects.findOne({title: Session.get('projectName')});
+ 		return project && project.open;
 	}
 });
 

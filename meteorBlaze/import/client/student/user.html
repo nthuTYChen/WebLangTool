@@ -119,7 +119,12 @@
 		<article id="{{project.title}}">
 			Title: {{project.title}}<br/>
 			Started At: {{project.startedAt}}<br/>
-			Open: {{project.open}}
+			{{#if project.open}}
+				Open: {{project.open}}
+			{{else}}
+				Closed at: {{project.closedAt}}<br/>
+				Rating: {{project.rating}}
+			{{/if}}
 			<p>
 				{{project.description}}
 			</p>
@@ -158,7 +163,9 @@
 		Time of Submission: {{writingRec "createdAt"}}<br/>
 		Last Edited at: {{writingRec "lastEditedAt"}}
 	</p>
-	<button id="submitNew">Submit changes as a new entry</button>
-	<button id="save">Save changes</button>
+	{{#if projectOpen}}
+		<button id="submitNew">Submit changes as a new entry</button>
+		<button id="save">Save changes</button>
+	{{/if}}
 	<button id="backToProjects">Projects</button>
 </template>

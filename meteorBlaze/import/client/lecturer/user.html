@@ -61,7 +61,7 @@
 		}
 	</style>
 	Students:
-	<select>
+	<select id="studentList">
 		<option value=""></option>
 		{{#each name in students}}
 			<option value="{{name}}">{{name}}</option>
@@ -81,6 +81,24 @@
 			<p>
 				{{project.description}}
 			</p>
+			{{#if project.open}}
+				<select class="projectRatings">
+					<option value=""></option>
+					<option value="A+">A+</option>
+					<option value="A">A</option>
+					<option value="A-">A-</option>
+					<option value="B+">B+</option>
+					<option value="B">B</option>
+					<option value="B-">B-</option>
+					<option value="C+">C+</option>
+					<option value="C">C</option>
+					<option value="C-">C-</option>
+					<option value="D">D</option>
+					<option value="E">E</option>
+					<option value="X">X</option>
+				</select>
+				<button class="closeProject" id="{{project._id}}">Close Project</button>
+			{{/if}}
 			{{#each writing in allWritings project.title}}
 				<section class="{{writing.userType}}" id="{{writing._id}}">
 					Word Count: {{writing.wordCount}}<br/>
@@ -110,7 +128,9 @@
 		Time of Submission: {{writingRec "createdAt"}}<br/>
 		Last Edited at: {{writingRec "lastEditedAt"}}
 	</p>
-	<button id="submitNew">Reply as a new entry</button>
-	<button id="save">Save comments</button>
+	{{#if projectOpen}}
+		<button id="submitNew">Reply as a new entry</button>
+		<button id="save">Save comments</button>
+	{{/if}}
 	<button id="backToProjects">Projects</button>
 </template>

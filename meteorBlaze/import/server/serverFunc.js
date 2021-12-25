@@ -111,8 +111,8 @@ export const submitReplyWriting = function(writingInfo) {
   }
 };
 
-export const closeWritingProject = function(projectTitle) {
-  writingProjects.update({title: projectTitle}, {$set: {open: false}});
+export const closeWritingProject = function(closeInfo) {
+  writingProjects.update({_id: closeInfo.target}, {$set: {open: false, rating: closeInfo.rating, closedAt: new Date()}});
 };
 
 export const checkAns = function(answers) {
