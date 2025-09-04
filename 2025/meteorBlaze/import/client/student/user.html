@@ -1,0 +1,171 @@
+<template name="user">
+	{{> Template.dynamic template=userSession}}
+</template>
+
+<template name="userIndex">
+	<form>
+		<p>
+			Name: <input type="text" id="name" required />
+		</p>
+		<p>
+			Gender:
+			<input type="radio" name="gender" value="male" />
+			<label for="male">Male</label>
+			<input type="radio" name="gender" value="female" />
+			<label for="female">Female</label>
+			<input type="radio" name="gender" value="transgender" checked />
+			<label for="transgender">Transgender</label>
+		</p>
+		<p>
+			Age:
+			<input type="number" id="age" min="0" max="120" required />
+		</p>
+		<p>
+			<input type="submit" value="Submit" />
+			<input type="reset" value="Reset" />
+		</p>
+	</form>
+	<em>User Profile</em><br/>
+	Name: {{profileKey "name"}}<br/>
+	Type: {{profileKey "type"}}<br/>
+	Gender: {{profileKey "gender"}}<br/>
+	Age: {{profileKey "age"}}<br/>
+	Lecturer: {{profileKey "lecturer"}}<br/>
+
+	Assign to lecturer: <input type="text" id="lecturerName" />
+	<button id="assignLecturer">Assign</button><br/>
+
+	<button id="testFuncCall">Call Server Function</button>
+	<button id="printProfile">Print Profile</button>
+	<button id="vocab">Vocabulary Master</button>
+	<button id="writing">Writing Geek</button>
+</template>
+
+<template name="vocab">
+	<style>
+		body {
+			margin-left: 10%;
+		}
+	</style>
+	<form>
+		<p>
+			Name: <input type="text" id="name" required />
+		</p>
+		<p>
+			<h3>tussock</h3>
+			<input type="radio" class="tussock" name="tussock" value="1" />
+			<label for="1">tuft</label><br/>
+			<input type="radio" class="tussock" name="tussock" value="2" />
+			<label for="2">tune</label><br/>
+			<input type="radio" class="tussock" name="tussock" value="3" />
+			<label for="3">tussle</label><br/>
+			<input type="radio" class="tussock" name="tussock" value="4" />
+			<label for="4">tusk</label>
+		</p>
+		<p>
+			<h3>ambit</h3>
+			<input type="radio" class="ambit" name="ambit" value="1" />
+			<label for="1">a parallelogram with four equal sides</label><br/>
+			<input type="radio" class="ambit" name="ambit" value="2" />
+			<label for="2">the quality of affording easy familiarity and sociability</label><br/>
+			<input type="radio" class="ambit" name="ambit" value="3" />
+			<label for="3">energy in a system no longer for mechanical work</label><br/>
+			<input type="radio" class="ambit" name="ambit" value="4" />
+			<label for="4">an area in which something operates or has power or control</label>
+		</p>
+		<p>
+			<h3>apposite</h3>
+			<input type="radio" class="apposite" name="apposite" value="1" />
+			<label for="1">illogical</label><br/>
+			<input type="radio" class="apposite" name="apposite" value="2" />
+			<label for="2">apt</label><br/>
+			<input type="radio" class="apposite" name="apposite" value="3" />
+			<label for="3">nuclear</label><br/>
+			<input type="radio" class="apposite" name="apposite" value="4" />
+			<label for="4">joint</label>
+		</p>
+		<input type="submit" value="Submit" />
+	</form>
+	<button>User Home</button>
+</template>
+
+<template name="writing">
+	<style>
+		article {
+			margin: 5px 0;
+			background-color: green;
+			color: white;
+			font-family: Montserrat, sans-serif;
+		}
+
+		article:hover {
+			cursor: pointer;
+		}
+
+		section {
+			margin: 3px 0;
+			font-size: 70%;
+		}
+
+		section.student {
+			background-color: blue;
+		}
+
+		section.lecturer {
+			background-color: crimson;
+		}
+	</style>
+	{{#each project in allProjects}}
+		<article id="{{project.title}}">
+			Title: {{project.title}}<br/>
+			Started At: {{project.startedAt}}<br/>
+			{{#if project.open}}
+				Open: {{project.open}}
+			{{else}}
+				Closed at: {{project.closedAt}}<br/>
+				Rating: {{project.rating}}
+			{{/if}}
+			<p>
+				{{project.description}}
+			</p>
+			{{#each writing in allWritings project.title}}
+				<section class="{{writing.userType}}" id="{{writing._id}}">
+					Word Count: {{writing.wordCount}}<br/>
+					Submitted at: {{writing.createdAt}}<br/>
+					Last Edited at: {{writing.lastEditedAt}}
+				</section>
+			{{else}}
+				<form style="display: none;">
+					<textarea style="width: 100%; height: 150px;"></textarea><br/>
+					<input type="submit" value="Submit" />
+					<input type="reset" value="Reset" />
+				</form>
+			{{/each}}
+		</article>
+	{{/each}}
+	<button>User Home</button>
+</template>
+
+<template name="writingTools">
+	<style>
+		textarea {
+			width: 200px;
+			height: 100px;
+		}
+	</style>
+	<h2>Project Title: {{writingRec "project"}}</h2>
+	<h3>Writing ID: {{writingRec "_id"}}</h3>
+	<p>
+		Body Texts:<br/>
+		<textarea>{{writingRec "texts"}}</textarea><br/>
+		Lecturer's comments:<br/>
+		<textarea readonly>{{writingRec "comments"}}</textarea><br/>
+		Time of Submission: {{writingRec "createdAt"}}<br/>
+		Last Edited at: {{writingRec "lastEditedAt"}}
+	</p>
+	{{#if projectOpen}}
+		<button id="submitNew">Submit changes as a new entry</button>
+		<button id="save">Save changes</button>
+	{{/if}}
+	<button id="backToProjects">Projects</button>
+</template>

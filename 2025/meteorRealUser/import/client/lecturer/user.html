@@ -1,0 +1,32 @@
+<template name="userHome_Lecturer">
+	<h1>Lecturer: {{username}}</h1>
+	{{> Template.dynamic template=userSession}}
+	<button id="listening">Listening Task</button>
+	<button id="logout">Log Out</button>
+</template>
+
+<template name="userIndex_Lecturer">
+	<p>
+		Age: {{profile "age"}}<br/>
+		Students: 
+	</p>
+	<form>
+		Add student(s):
+		<input type="text" id="studentName" />
+		<input type="submit" value="Add" />
+	</form>
+</template>
+
+<template name="listening_Lecturer">
+	<h1>Listening Tasks</h1>
+	<form>
+		Title: <input type="text" id="title" /><br/>
+		Description: <input type="text" id="description" /><br/>
+		Audio Filename: <input type="text" id="filename" />
+		<p>
+			<input type="submit" value="Add a new task" />
+			<input type="reset" value="Reset" />
+		</p>
+	</form>
+	<button id="home">Home</button>
+</template>

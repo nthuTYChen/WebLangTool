@@ -1,0 +1,136 @@
+<template name="user">
+	{{> Template.dynamic template=userSession}}
+</template>
+
+<template name="userIndex">
+	<form>
+		Lecturer Name: <input type="text" id="name" value="{{lecturer}}" /><br/>
+		<input type="submit" value="Submit" />
+	</form>
+	<p>
+		Current student(s): 
+		{{#each value in students}}
+			{{value}}, 
+		{{else}}
+			None.
+		{{/each}}
+	</p>
+	Add student: <input type="text" id="studentName" />
+	<button id="addStudent">Add</button><br/>
+	<button id="writing">Writing Geek</button>
+</template>
+
+<template name="writing">
+	<style>
+		article {
+			margin: 5px 0;
+			background-color: green;
+			color: white;
+			font-family: Montserrat, sans-serif;
+		}
+
+		article:hover {
+			cursor: pointer;
+		}
+
+		article > p {
+			font-size: 70%;
+			font-family: Scheherazade New, serif;
+		}
+
+		article > span {
+			float: right;
+			font-weight: bold;
+		}
+
+		article > span:hover {
+			color: red;
+		}
+
+		section {
+			margin: 3px 0;
+			font-size: 70%;
+		}
+
+		section.student {
+			background-color: blue;
+		}
+
+		section.lecturer {
+			background-color: crimson;
+		}
+	</style>
+	Students:
+	<select id="studentList">
+		<option value=""></option>
+		{{#each name in students}}
+			<option value="{{name}}">{{name}}</option>
+		{{/each}}
+	</select><br/>
+	<p>
+		Title: <input type="text" id="newProject" /><br/>
+		Description: <input type="text" id="newProjectDes" /><br/>
+		<button id="addProject">Add a new project</button>
+	</p>
+	{{#each project in allProjects}}
+		<article id="{{project.title}}">
+			<span id="{{project.title}}">X</span>
+			Title: {{project.title}}<br/>
+			Started At: {{project.startedAt}}<br/>
+			Open: {{project.open}}
+			<p>
+				{{project.description}}
+			</p>
+			{{#if project.open}}
+				<select class="projectRatings">
+					<option value=""></option>
+					<option value="A+">A+</option>
+					<option value="A">A</option>
+					<option value="A-">A-</option>
+					<option value="B+">B+</option>
+					<option value="B">B</option>
+					<option value="B-">B-</option>
+					<option value="C+">C+</option>
+					<option value="C">C</option>
+					<option value="C-">C-</option>
+					<option value="D">D</option>
+					<option value="E">E</option>
+					<option value="X">X</option>
+				</select>
+				<button class="closeProject" id="{{project._id}}">Close Project</button>
+			{{/if}}
+			{{#each writing in allWritings project.title}}
+				<section class="{{writing.userType}}" id="{{writing._id}}">
+					Word Count: {{writing.wordCount}}<br/>
+					Submitted at: {{writing.createdAt}}<br/>
+					Last Edited at: {{writing.lastEditedAt}}
+				</section>
+			{{/each}}
+		</article>
+	{{/each}}
+	<button id="userIndex">Home</button>
+</template>
+
+<template name="writingTools">
+	<style>
+		textarea {
+			width: 200px;
+			height: 100px;
+		}
+	</style>
+	<h2>Project Title: {{writingRec "project"}}</h2>
+	<h3>Writing ID: {{writingRec "_id"}}</h3>
+	<p>
+		Body Texts:<br/>
+		<textarea>{{writingRec "texts"}}</textarea><br/>
+		Lecturer's comments:<br/>
+		<textarea>{{writingRec "comments"}}</textarea><br/>
+		Time of Submission: {{writingRec "createdAt"}}<br/>
+		Last Edited at: {{writingRec "lastEditedAt"}}
+	</p>
+	{{#if projectOpen}}
+		<button id="submitNew">Reply as a new entry</button>
+		<button id="save">Save comments</button>
+	{{/if}}
+	<button id="backToProjects">Projects</button>
+</template>
