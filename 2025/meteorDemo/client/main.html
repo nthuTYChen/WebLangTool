@@ -1,0 +1,34 @@
+<head>
+	<title>A Meteor Demo</title>
+</head>
+<body>
+	This is my first Meteor application!
+	{{> test}}
+	{{> updateVar}}
+</body>
+
+<template name="test">
+	This is a test template.
+	<p>
+		The template variable is: {{returnTemplateVar}}.
+	</p>
+	<p>
+		templateVar + 1 is: {{addTemplateVar 1}}
+	</p>
+	<p>
+		templateVar + 2 is: {{addTemplateVar 2}}
+	</p>
+	<p>
+		templateVar + " = zero" is: {{addTemplateVar "= zero"}}
+	</p>
+	<div style="background-color: yellow;">
+		Move the mouse over me, and there's a message you will see!
+	</div>
+	<input type = "button" value = "Add 1" />
+</template>
+
+<template name="updateVar">
+	Whenever the button is clicked, the number will increase by 1.<br/>
+	Counter: <span>0</span><br/>
+	<input type = "button" value = "Add 1" />
+</template>
