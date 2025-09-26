@@ -21,6 +21,29 @@ Template.body.events(
         handedness: 'right'
       };
       Meteor.call('printProfile', profile);
+    },
+    'click input#getProfileDone': function() {
+      let profile = {
+        name: 'TY Chen'
+      };
+      Meteor.call('profileResp', profile, function(err, res) {
+        console.log(res);
+      });
+    },
+    'click input#doneOrError': function() {
+      let profile = {
+        //name: 'TY Chen',
+        age: 77
+      };
+      Meteor.call('errorResp', profile, function(err, res) {
+        if(err) {
+          console.log(err);
+          alert(err.error);
+        }
+        else {
+          console.log(res);
+        }
+      });
     }
   }
 );

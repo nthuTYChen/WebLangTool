@@ -17,6 +17,19 @@ Meteor.methods(
       console.log(profile.name);
       console.log(profile.age);
       console.log(profile.dob);
+    },
+    profileResp: function(profile) {
+      console.log('Called by ' + profile.name);
+      return 'done!';
+    },
+    errorResp: function(profile) {
+      if(profile.name) {
+        console.log('Called by ' + profile.name);
+      }
+      else {
+        throw new Meteor.Error('No name info!');
+      }
+      return 'done!';
     }
   }
 );
