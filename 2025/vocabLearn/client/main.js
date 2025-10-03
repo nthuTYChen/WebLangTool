@@ -1,3 +1,5 @@
+/* Oct 3, 2025 - Nothing has been changed in the default client main.js code */
+
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
