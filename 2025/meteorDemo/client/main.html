@@ -3,12 +3,17 @@
 </head>
 <body>
 	This is my first Meteor application!
-	{{> test}}
-	{{> updateVar}}
+	<!-- {{> test}}
+	{{> updateVar}} -->
+	<p>
+		<input type="button" class="loadTemplate" id="test" value="Switch to test" /> 
+		<input type="button" class="loadTemplate" id="updateVar" value="Switch to updateVar" />
+	</p>
+	{{> Template.dynamic template=returnSessionVar}}
 </body>
 
 <template name="test">
-	This is a test template.
+	<h1>Template: Test</h1>
 	<p>
 		The template variable is: {{returnTemplateVar}}.
 	</p>
@@ -28,7 +33,8 @@
 </template>
 
 <template name="updateVar">
+	<h1>Template: updateVar</h1>
 	Whenever the button is clicked, the number will increase by 1.<br/>
-	Counter: <span>0</span><br/>
-	<input type = "button" value = "Add 1" />
+	Counter: <span>{{returnTemplateVar}}</span><br/>
+	<input type = "button" id="addOne" value = "Add 1" />
 </template>
