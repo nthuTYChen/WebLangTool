@@ -28,8 +28,15 @@ Meteor.methods(
     },
     insertSampleProfile: function() {
       userData.upsertAsync(
-        {name: 'Bella', type: 'oversleeper'},
-        {$set: {gender: 'male', age: 54}},
+        {name: 'TYC', type: 'student'},
+        {$set: {gender: 'male', age: 24}},
+        {multi: true}
+      );
+    },
+    insertAnotherProfile: function() {
+      userData.upsertAsync(
+        {name: 'Kelly', type: 'instructor'},
+        {$set: {gender: 'female', age: 54}},
         {multi: true}
       );
     },

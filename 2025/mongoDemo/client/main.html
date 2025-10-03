@@ -5,5 +5,18 @@
 	<h1>This is a MongoDB Demo!</h1>
 	<input type="button" id="removeAllUserData" value="Remove User Data" />
 	<input type="button" id="addSampleProfile" value="Add Sample Profile" />
+	<input type="button" id="addAnotherProfile" value="Add Another Profile" />
 	<input type="button" id="updateSampleProfile" value="Update Sample Profile" />
+	<section>
+		<h2>Enter a username</h2>
+		<input type="text" id="username" />
+		<input type="button" id="submitUsername" value="Submit" />
+	</section>
+	<section>
+		<h2>User Profile</h2>
+		<p>Username: {{profileInfo "name"}}</p>
+		<p>Type: {{profileInfo "type"}}</p>
+		<p>Age: {{profileInfo "age"}}</p>
+		<p>Gender: {{profileInfo "gender"}}</p>
+	</section>
 </body>
