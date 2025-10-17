@@ -12,6 +12,10 @@ import { Mongo } from 'meteor/mongo';
 // question as an individual document.
 global.questionDB = new Mongo.Collection('questionDB');
 
+Meteor.publish('allQuestions', function() {
+  return questionDB.find({}, {fields: {answer: 0}});
+});
+
 Meteor.startup(
   // The function that runs when the Meteor server starts running.
   /* The function is "async" (asynchronous) because an asynchronous

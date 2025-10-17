@@ -1,28 +1,80 @@
-<!-- Oct 3, 2025 - Nothing has been changed in the default HTML code -->
-
 <head>
   <title>vocabLearn</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
 
-  {{> hello}}
-  {{> info}}
+    html {
+      min-height: 100%;
+      width: 100%;
+      max-width: 100%;
+      background-color: pink;
+    }
+
+    h1 {
+      background-color: lightblue;
+      margin: 10vh 20vw 0;
+      padding: 1vh;
+      font-family: sans-serif;
+      text-align: center;
+    }
+  </style>
+  <h1>Vocabulary Learning</h1>
+  {{> Template.dynamic template=browseSession}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="index">
+  <style>
+    h1 ~ p {
+      background-color: azure;
+      margin: 0 20vw;
+      padding: 5vh 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+  </style>
+  <p>
+    User:
+    <input type="text" id="username" />
+    <input type="button" id="signin" value="Sign In" />
+  </p>
 </template>
 
-<template name="info">
-  <h2>Learn Meteor!</h2>
-  <ul>
-    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-  </ul>
+<template name="learning">
+  <style>
+    h1 ~ article {
+      background-color: tomato;
+      margin: 0 20vw;
+      padding: 2vh 2vw;
+    }
+
+    h1 ~ article > section {
+      background-color: gold;
+      margin: 2vh 0;
+    }
+
+    h1 ~ article > section > p {
+      margin: 1vh 0;
+    }
+  </style>
+  <article>
+    {{#each questions}}
+      <section>
+        <p>{{question}}</p>
+        <input type="radio" name="id_{{_id}}" value="{{option1}}" />{{option1}}<br/>
+        <input type="radio" name="id_{{_id}}" value="{{option2}}" />{{option2}}<br/>
+        <input type="radio" name="id_{{_id}}" value="{{option3}}" />{{option3}}<br/>
+        <input type="radio" name="id_{{_id}}" value="{{option4}}" />{{option4}}
+      </section>
+    {{/each}}
+    <p>
+      <input type="button" id="submitAns" value="Submit Answers" />
+    </p>
+  </article>
 </template>
