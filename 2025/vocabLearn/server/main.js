@@ -1,5 +1,5 @@
-/* Oct 3, 2025 - To begin with, please make sure that you've installed the
-   following packages to this new Meteor demo application: session, reactive-var, random.
+/* Oct 17, 2025 - To begin with, please make sure that you've installed the
+   following packages to this new Meteor demo application: session, reactive-var, underscore.
    Then, please remember to create a private directory with "multipleChoiceSample.txt"
    file inside.
 */
@@ -12,7 +12,12 @@ import { Mongo } from 'meteor/mongo';
 // question as an individual document.
 global.questionDB = new Mongo.Collection('questionDB');
 
+// Publish the questionDB collection in the name of 'allQuestions'
 Meteor.publish('allQuestions', function() {
+  /* The first empty object {} in find() represents the selector, and an empty object
+     matches every single document. The second object sets the options of this
+     document search, and 'fields' determins the fields to be included (1) or excluded (0)
+     in the documents published to the client.*/
   return questionDB.find({}, {fields: {answer: 0}});
 });
 
