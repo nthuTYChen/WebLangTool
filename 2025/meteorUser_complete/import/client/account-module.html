@@ -1,0 +1,99 @@
+<template name="signUp">
+  <style>
+    body > article > table {
+      background-color: lightgrey;
+      border: 0;
+      width: 30vw;
+      margin: 0 15vw;
+      font-size: 120%;
+      text-align: left;
+    }
+
+    table td {
+      padding: 2px;
+    }
+
+    table td > input {
+      font-size: 110%;
+    }
+
+    table td > input:invalid {
+      background-color: pink;
+    }
+
+    body > article > p {
+      margin: 1vh 0;
+      font-size: 120%;
+    }
+
+    body > article > p > input[type="button"] {
+      font-size: 110%;
+      padding: 2px;
+    }
+  </style>
+  <article>
+    <table>
+      <tbody>
+        <tr>
+          <td>Full name:</td>
+          <td><input type="text" id="fullname" /></td>
+        </tr>
+        <tr>
+          <td>Username (email):</td>
+          <td><input type="email" id="username" pattern=".+@.+\..+" /></td>
+        </tr>
+        <tr>
+          <td>Password:</td>
+          <td><input type="password" id="password" /></td>
+        </tr>
+        <tr>
+          <td>Confirm Password:</td>
+          <td><input type="password" id="passwordConfirm" /></td>
+        </tr>
+        <tr>
+          <td>User Type:</td>
+          <td>
+            <input type="radio" name="usertype" class="usertype" id="student" checked="checked" /> Student
+            <input type="radio" name="usertype" class="usertype" id="instructor" /> Instructor
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <input type="button" id="submitSignUp" value="Submit" /> <input type="button" id="backHome" value="Back" />
+    </p>
+  </article>
+</template>
+
+<template name="signUpSuccess">
+  <article>
+    <p>
+      Your account has been created. Check your e-mail to verify your account following the instructions.
+    </p>
+    <p>
+      <input type="button" id="backHome" value="Back" />
+    </p>
+  </article>
+</template>
+
+<template name="verifySuccess">
+  <article>
+    <p>
+      Your account has been verified successfully. You can log in from the home page.
+    </p>
+    <p>
+      <input type="button" id="backHome" value="Back" />
+    </p>
+  </article>
+</template>
+
+<template name="verifyFailed">
+  <article>
+    <p>
+      You failed to verify your account. The verification link might be incorrect or expired.
+    </p>
+    <p>
+      <input type="button" id="backHome" value="Back" />
+    </p>
+  </article>
+</template>

@@ -1,0 +1,35 @@
+<template name="userHome">
+	<style>
+		body > article > table {
+      		background-color: lightgrey;
+      		border: 0;
+      		width: 30vw;
+      		margin: 0 15vw;
+      		font-size: 120%;
+      		text-align: left;
+    	}
+
+    	table td {
+      		padding: 2px;
+    	}
+
+    	table td > input {
+      		font-size: 110%;
+    	}
+	</style>
+	<article>
+		<table>
+			<tbody>
+				<tr>
+					<td>Full name:</td><td>{{fullname}}</td>
+				</tr>
+				<tr>
+					<td>E-mail:</td><td>{{userProfile "username"}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			<input type="button" id="logout" value="Log Out" />
+		</p>
+	</article>
+</template>
