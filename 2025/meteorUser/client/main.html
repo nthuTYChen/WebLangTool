@@ -1,0 +1,60 @@
+<head>
+  <title>meteorUser</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      min-height: 100%;
+      width: 100%;
+      max-width: 100%;
+      background-color: coral;
+    }
+
+    h1 {
+      background-color: lightblue;
+      margin: 10vh 20vw 0;
+      padding: 1vh 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    body > article {
+      background-color: orange;
+      margin: 0 20vw;
+      padding: 5vh 0;
+      font-family: sans-serif;
+      text-align: center;
+    }
+  </style>
+  <h1>Language App User System!</h1>
+  {{> Template.dynamic template=browseSession}}
+</body>
+
+<template name="signIn">
+  <style>
+    article > p {
+      margin: 1vh 0;
+    }
+
+    input:invalid {
+      background-color: pink;
+    }
+  </style>
+  <article>
+    <p>
+      Username (e-mail): <input type="email" pattern=".+@.+\..+" id="username" /> 
+      Password: <input type="password" id="password" />
+    </p>
+    <p>
+      <input type="button" id="signIn" value="Sign In" /> 
+      <input type="button" id="signUp" value="Sign Up" />
+    </p>
+  </article>
+</template>
