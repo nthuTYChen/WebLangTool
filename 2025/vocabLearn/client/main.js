@@ -1,4 +1,4 @@
-/* Oct 17, 2025 - To begin with, please make sure that you've installed the
+/* Oct 31, 2025 - To begin with, please make sure that you've installed the
    following packages to this new Meteor demo application: session, reactive-var, underscore.
    Then, please remember to create a private directory with "multipleChoiceSample.txt"
    file inside.
@@ -6,22 +6,35 @@
 
 import { Mongo } from 'meteor/mongo';
 import { Template } from 'meteor/templating';
+import { Tracker } from 'meteor/tracker';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Session } from 'meteor/session';
 
 import './main.html';
 
-// Create a local copy of the questionDB collection.
+// Create a local copy of the questionDB/userDataDB collection.
 global.questionDB = new Mongo.Collection('questionDB');
+global.userDataDB = new Mongo.Collection('userDataDB');
 
 // Set a session variable with a default value of 'index'. 
 // This variable is for loading different templates.
 Session.setDefault('browseSession', 'index');
+// Set a session variable with a default value of ''. 
+// This variable is for storing a username.
+Session.setDefault('username', '');
 
-// When the 'body' template is created, subscribe to the
-// allQuestions publication defined in /server/main.js.
 Template.body.onCreated(function() {
+  // When the 'body' template is created, subscribe to the
+  // allQuestions publication defined in /server/main.js.
   Meteor.subscribe('allQuestions');
+  /* Subscribe the userData publication with the current username.
+     This subscription has to be placed inside Tracker.autorun(),
+     so data subscription is updated when there's a change in the
+     reactive element (e.g., from '' to a real username for the
+     session variable). */
+  Tracker.autorun(function() {
+    Meteor.subscribe('userData', Session.get('username'));
+  });
 });
 
 // Define the browseSession helper to return the value
@@ -45,6 +58,13 @@ Template.index.events(
       // to 'learning', which helps load the 'learning'
       // template.
       Session.set('browseSession', 'learning');
+      // Get the username from the Web interface, and store it
+      // to the session variable.
+      let username = document.getElementById('username').value;
+      Session.set('username', username);
+      // Call the server method to add a new user profile, if the
+      // username is new.
+      Meteor.call('addUser', username);
     }
   }
 );
@@ -126,14 +146,15 @@ Template.learning.events(
           }
         }
       }
-      // Show all the temporary answers in the browser console.
-      console.log(instances.answers);
     },
     // An event listener for the <input id="submitAns"> element for submitting
     // all the temporary answers.
     'click input#submitAns': function(event, instances) {
       let allAns = instances.answers;
-      // Meteor call
+      // Submit the answers to the server for validation for the current user
+      Meteor.call('validateAns', allAns, Session.get('username'));
+      // Reset the current answer array after each submission
+      instances.answers = [];
     }
   }
 );
