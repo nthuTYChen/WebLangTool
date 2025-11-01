@@ -4,6 +4,7 @@
 </head>
 
 <body>
+  <!-- Again, I'm skipping the explanation of the CSS styles -->
   <style>
     * {
       margin: 0;
@@ -34,6 +35,7 @@
     }
   </style>
   <h1>Language App User System!</h1>
+  <!-- Dynamic template loading in <body> -->
   {{> Template.dynamic template=browseSession}}
 </body>
 
@@ -43,13 +45,23 @@
       margin: 1vh 0;
     }
 
+    /* This CSS style is worth of explanation. When the email input does not
+       match the pattern (see below), the input email is assigned to a "pseudoclass"
+       "invalid", so we can define a CSS style for this class. That is, when the
+       email input does not match the pattern, change the background color of that
+       input element to pink. */
     input:invalid {
       background-color: pink;
     }
   </style>
   <article>
     <p>
+      <!-- Use the "email" input type, so the text inside could be compared to a 
+      regular expression that matches a common email format, namely at least one
+      character (.+) followed by @ follow by at least one character (.+) followed 
+      by . (\.) followed by at least one character (.+).-->
       Username (e-mail): <input type="email" pattern=".+@.+\..+" id="username" /> 
+      <!-- Use the "password" input type, so the text input is masked automatically -->
       Password: <input type="password" id="password" />
     </p>
     <p>
