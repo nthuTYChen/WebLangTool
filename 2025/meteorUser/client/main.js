@@ -4,6 +4,7 @@
 /* This application is modularized as non-core templates and functions
    are now placed in /import/client/ */
 
+import { Accounts } from 'meteor/accounts-base';
 import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -13,6 +14,23 @@ import './main.html';
 // Set a session variable "browseSession" to have the default value "signIn",
 // which is designed to load the "signIn" template in /main.html by default.
 Session.set('browseSession', 'signIn');
+
+Accounts.onEmailVerificationLink(
+  function(token, done) {
+    Accounts.verifyEmail(token, function(err) {
+      import('/import/client/account-module.js').then(
+        function() {
+          if(err) {
+            Session.set('browseSession', 'verifyFailed');
+          }
+          else {
+            Session.set('browseSession', 'verifySuccess');
+          }
+        }
+      );
+    });
+  }
+);
 
 // The single helper returns the browseSession variable for dynamic
 // template loading.
