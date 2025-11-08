@@ -25,6 +25,8 @@ Accounts.onEmailVerificationLink(
     // After the processing verification link is initiated, use verifyEmail()
     // to send the verification token to the server. A callback function is run
     // to process the potential error messages sent back from the server.
+    // On the server, this process is handled automatically by the accounts-base
+    // package, so there is no corresponding code in /server/main.js.
     Accounts.verifyEmail(token, function(err) {
       // Import account-module.js, so the templates in account-module.html
       // are ready to be loaded depending on the results of the verification process.

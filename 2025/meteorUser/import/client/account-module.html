@@ -1,5 +1,6 @@
 <!-- The signUp template that contains the full sign-up form -->
 <template name="signUp">
+	<!-- CSS styles were already explained during the lecture -->
 	<style>
 		body > article > table {
 			background-color: lightgrey;
@@ -18,6 +19,7 @@
 		}
 	</style>
 	<article>
+		<!-- Use the <table> tag for the sign up form -->
 		<table>
 			<tbody>
 				<tr>
@@ -36,8 +38,16 @@
 					<td>Confirm Password:</td>
 					<td><input type="password" id="passwordConfirm" /></td>
 				</tr>
+				<!-- Allow the users to choose whether they are 
+				     students or instructors. -->
 				<tr>
 					<td>User Type:</td>
+					<!-- Again, the radio buttons are grouped by the
+					     "name" attribute, so users can only choose
+					     between the two user types in the Web UI. 
+					     Crucially, the "student" radio button is
+					     "checked" by default.
+					-->
 					<td>
 						<input type="radio" name="usertype" class="usertype" id="student" checked="checked" /> Student
 						<input type="radio" name="usertype" class="usertype" id="instructor" /> Instructor
@@ -45,6 +55,8 @@
 				</tr>
 			</tbody>
 		</table>
+		<!-- Buttons for submitting the user profile or navigating
+		     back to the index page. -->
 		<p>
 			<input type="button" id="submitSignUp" value="Submit" /> 
 			<input type="button" id="backHome" value="Back" />
@@ -52,6 +64,8 @@
 	</article>
 </template>
 
+<!-- The template that is loaded after the user profile is submitted
+     successfully to create a new user in the server. -->
 <template name="signUpSuccess">
 	<article>
 		<p>
@@ -63,6 +77,8 @@
 	</article>
 </template>
 
+<!-- The template that is loaded after an account's email is verified
+     successfully in the server. -->
 <template name="verifySuccess">
 	<article>
 		<p>
@@ -74,6 +90,8 @@
 	</article>
 </template>
 
+<!-- The template that is loaded after an account's email fails to be
+     verified in the server. -->
 <template name="verifyFailed">
 	<article>
 		<p>
