@@ -2,4 +2,16 @@
    session reactive-var
  */
 
+import { Session } from 'meteor/session';
+
 import './main.html';
+
+Session.setDefault('browseSession', 'frontPage');
+
+Template.body.helpers(
+   {
+      browseSession: function() {
+         return Session.get('browseSession');
+      }
+   }
+);

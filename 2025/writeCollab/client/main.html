@@ -24,8 +24,33 @@
       background-color: white;
       color: #2b2b2b;
       font-family: Domine, serif;
+      text-align: center;
+    }
+
+    body > h1 {
+      padding: 2vh 0;
+      font-family: Stack Sans Text, sans-serif;
+      font-size: 5vh;
+    }
+
+    body > article {
+      width: 60vw;
+      margin: 0 20vw;
     }
   </style>
   <h1>Collaborative Writing!</h1>
-
+  {{> Template.dynamic template=browseSession}}
 </body>
+
+<template name="frontPage">
+  <style>
+    body > article > img {
+      height: 50%;
+      width: 50%;
+      border-radius: 10px;
+    }
+  </style>
+  <article>
+    <img src="/frontPageImage.png" />
+  </article>
+</template>
