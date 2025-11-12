@@ -27,29 +27,52 @@
       text-align: center;
     }
 
-    body > h1 {
+    body > article {
+      min-height: 100vh;
+      width: 60vw;
+      margin: 0 20vw;
+      background-color: #f6f1f1;
+    }
+
+    body > article > h1 {
+      width: 60vw;
       padding: 2vh 0;
       font-family: Stack Sans Text, sans-serif;
       font-size: 5vh;
     }
 
-    body > article {
-      width: 60vw;
-      margin: 0 20vw;
+    body > article > p {
+      padding: 1vh 0;
+    }
+
+    input[type="button"] {
+      padding: 5px;
+      font-size: 120%;
+      font-family: Stack Sans Text, sans-serif;
+    }
+
+    input[type="button"]:hover {
+      cursor: pointer;
     }
   </style>
-  <h1>Collaborative Writing!</h1>
-  {{> Template.dynamic template=browseSession}}
+  <article>
+    <h1>Collaborative Writing!</h1>
+    {{> Template.dynamic template=browseSession}}
+  </article>
 </body>
 
 <template name="frontPage">
   <style>
-    body > article > img {
+    body > article > section > img {
       width: 50%;
       border-radius: 10px;
     }
   </style>
-  <article>
+  <section>
     <img src="/frontPageImage.png" />
-  </article>
+    <p>
+      <input type="button" id="studentCheckIn" value="Student" /> 
+      <input type="button" id="instructorCheckIn" value="Instructor" />
+    </p>
+  </section>
 </template>
