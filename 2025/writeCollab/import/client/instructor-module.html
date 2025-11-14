@@ -1,0 +1,65 @@
+<template name="instructorHome">
+	<style>
+		section > table {
+			width: 70vw;
+			margin: 2vh 5vw;
+			text-align: left;
+		}
+
+		section > table > thead {
+			font-weight: bold;
+		}
+
+		table td {
+			padding: 5px;
+			border-bottom: 2px dotted grey;
+		}
+
+		table td:not(:last-of-type) {
+			border-right: 2px dotted grey;
+		}
+
+		table td:first-of-type {
+			width: 50%;
+		}
+
+		table td:nth-of-type(2) {
+			width: 15%;
+		}
+
+		table > tbody td:first-of-type:hover {
+			background-color: #e0e0e0;
+			cursor: pointer;
+			transition: all ease-in 0.2s;
+		}
+	</style>
+	<h6>Instructor's Corner: Rigorous training is the key to success!</h6>
+	<p>
+		<input type="button" id="createNewProject" value="Create a New Project" />
+		<input type="button" id="logout" value="Log Out" />
+	</p>
+	<p>
+		<input type="radio" name="showItems" id="allItems" checked="checked" /> All 
+		<input type="radio" name="showItems" id="newItems" /> New
+		<input type="radio" name="showItems" id="incompleteItems" /> Incomplete 
+		<input type="radio" name="showItems" id="completeItems" /> Complete
+	</p>
+	<section>
+		<table>
+			<thead>
+				<tr>
+					<td>Project Title</td>
+					<td>Status</td>
+					<td>Date of Completion</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Fake project</td>
+					<td>incomplete</td>
+					<td>2025/11/14</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+</template>

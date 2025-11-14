@@ -4,13 +4,6 @@
 </head>
 
 <body>
-  <!-- Include CSS settings in different template so they can be applied 
-       only when a template is loaded. CSS settings are not the most
-       critical part in this course, so I won't add any comment for them.
-   -->
-  <!-- Since <body> is always loaded, these CSS settings are universal 
-       settings - they apply to everything loaded into the browser.
-   -->
   <style>
     * {
       margin: 0;
@@ -33,15 +26,10 @@
     }
   </style>
   <h1>Vocabulary Learning</h1>
-  <!-- Dynamic template loading based on the value returned from the browseSession
-       helper defined in /client/main.js
-   -->
   {{> Template.dynamic template=browseSession}}
 </body>
 
-<!-- The default index template for signing in the user -->
 <template name="index">
-  <!-- Template-specific CSS settings -->
   <style>
     h1 ~ p {
       background-color: azure;
@@ -51,7 +39,6 @@
       text-align: center;
     }
   </style>
-  <!-- The sign-in form -->
   <p>
     User:
     <input type="text" id="username" />
@@ -59,10 +46,7 @@
   </p>
 </template>
 
-<!-- The learning template for showing multiple-choice vocabulary 
-questions -->
 <template name="learning">
-  <!-- Template-specific CSS settings -->
   <style>
     h1 ~ article {
       background-color: tomato;
@@ -79,31 +63,16 @@ questions -->
       margin: 1vh 0;
     }
   </style>
-  <!-- All questions are contained inside this <article> element -->
   <article>
-    <!-- #each creates the same HTML structure for each data entry in the
-    array returned from the 'questions' helpers defined in /client/main.js,
-    which includes a set of randomly ordered vocabulary questions, -->
     {{#each questions}}
-      <!-- Each question is enclosed inside a section. -->
       <section>
-        <!-- For each question represented in an object, we can retrieve the
-        question itself from the 'question' field of the object -->
         <p>{{question}}</p>
-        <!-- The text of each of the four options could be obtained from 'option1', 
-        'option2', etc. from the object. Each set of radio buttons are grouped by
-        the same 'name' attribute based on the '_id' field of the object. We need to
-        add the string 'id_' before the ID of each question because an ID could 
-        beings with a number, which is bad as a value for an attribute of an HTML 
-        element. The string 'id_' is removed in /client/main.js so JavaScript could
-        process the real ID. -->
         <input type="radio" name="id_{{_id}}" value="{{option1}}" />{{option1}}<br/>
         <input type="radio" name="id_{{_id}}" value="{{option2}}" />{{option2}}<br/>
         <input type="radio" name="id_{{_id}}" value="{{option3}}" />{{option3}}<br/>
         <input type="radio" name="id_{{_id}}" value="{{option4}}" />{{option4}}
       </section>
     {{/each}}
-    <!-- The button for submitting the answers at the end of the question list. -->
     <p>
       <input type="button" id="submitAns" value="Submit Answers" />
     </p>
