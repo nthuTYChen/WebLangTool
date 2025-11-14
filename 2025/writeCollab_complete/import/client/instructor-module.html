@@ -1,0 +1,224 @@
+<template name="instructorHome">
+	<style>
+		section > table {
+      		width: 70vw;
+      		margin: 2vh 5vw;
+      		text-align: left;
+    	}
+
+    	section > table > thead {
+      		font-weight: bold;
+    	}
+
+    	table td {
+      		padding: 5px;
+      		border-bottom: 2px dotted grey;
+    	}
+
+	    table td:not(:last-of-type) {
+      		border-right: 2px dotted grey;
+    	}
+
+    	table td:first-of-type {
+      		width: 50%;
+    	}
+
+    	table td:nth-of-type(2) {
+      		width: 15%;
+    	}
+
+    	table > tbody td:first-of-type:hover {
+    		background-color: #e0e0e0;
+    		cursor: pointer;
+    		transition: all ease-in 0.2s;
+    	}
+	</style>
+	<h6>Instructor's Corner: Rigorous training is the key to success!</h6>
+	<p>
+		<input type="button" id="createNewProject" value="Create a new project" /> 
+		<input type="button" id="logout" value="Log out" /> 
+	</p>
+	<p>
+		<input type="radio" name="showItems" id="allItems" checked="checked" /> All 
+		<input type="radio" name="showItems" id="newItems" /> New 
+		<input type="radio" name="showItems" id="incompleteItems" /> Incomplete 
+		<input type="radio" name="showItems" id="completeItems" /> Complete
+	</p>
+	<section>
+		<table>
+			<thead>
+				<tr>
+					<td>Project Title</td>
+					<td>Status</td>
+					<td>Date of Completion</td>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each writeProjects}}
+					<tr>
+						<td id="project_{{_id}}">{{title}} (v{{version}}{{#if isNew}}<span style="color: crimson;"> New!</span>{{/if}}) <span style="background-color: darkblue; color: white; padding: 2px;">{{studentName}}</span> </td>
+						<td>{{status}}</td>
+						<td>{{createdAt}}</td>
+					</tr>
+				{{else}}
+					<tr>
+						<td colspan="3">
+							Lucky you. No one is bothering you at this moment. Why not create a new writing project and bother your student(s) instead?
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</section>
+</template>
+
+<template name="createProject">
+	<style>
+		section > table {
+      		width: 60vw;
+      		margin: 2vh 10vw;
+      		text-align: left;
+    	}
+
+    	table td {
+      		padding: 5px;
+      		border-bottom: 2px dotted grey;
+    	}
+
+    	table td:first-of-type {
+    		width: 25%;
+    		font-weight: bold;
+    	}
+
+    	table td > input, table td > textarea {
+    		width: 100%;
+    		padding: 5px 2px;
+    		font-size: 100%;
+      		font-family: Domine, serif;
+    	}
+
+    	table td > textarea {
+    		height: 33vh;
+    	}
+
+	</style>
+	<h6>Creating a new writing project.</h6>
+	<p>
+		<input type="button" id="submit" value="Create" /> 
+		<input type="button" id="cancel" value="Cancel" /> 
+	</p>
+	<section>
+		<table>
+			<tbody>
+				<tr>
+					<td>Project Title:</td>
+					<td>
+						<input type="text" id="projectTitle" />
+					</td>
+				</tr>
+				<tr>
+					<td>Student's Name:</td>
+					<td>
+						<input type="text" id="studentName" />
+					</td>
+				</tr>
+				<tr>
+					<td>Instructions:</td>
+					<td>
+						<textarea id="instructions"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>Word Limit:</td>
+					<td>
+						<input type="number" id="wordLimit" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+</template>
+
+<template name="commenting">
+	<style>
+		section {
+			margin: 1vh 0;
+			padding: 5px;
+		}
+
+		section > textarea {
+			width: 100%;
+			height: 30vh;
+			font-family: Domine, serif;
+			font-size: 2vh;
+			border: 0;
+			resize: none;
+		}
+
+		section > textarea:focus {
+			border: 0;
+			outline: none;
+    		/*-webkit-box-shadow: none;
+    		-moz-box-shadow: none;
+    		box-shadow: none;*/
+		}
+
+		section:not(:first-of-type) {
+			width: 80%;
+			margin-left: 10%;
+			padding: 10px;
+			text-align: left;
+		}
+
+		section:not(:first-of-type):not(:last-of-type), 
+		section:not(:first-of-type):not(:last-of-type) > textarea {
+			background-color: lightgreen;
+		}
+
+		section:last-of-type, section:last-of-type > textarea {
+			background-color: #e2eaee;
+		}
+
+		section:last-of-type > textarea {
+			height: 50vh;
+			background-color: #e2eaee;
+			font-family: Domine, serif;
+		}
+
+		section > p {
+			margin: 1vh 0;
+		}
+
+		section > p:first-of-type {
+			font-family: Stack Sans Text, sans-serif;
+			font-weight: bold;
+		}
+	</style>
+	<section>
+		<p>Project Title: {{projectInfo "title"}}</p>
+		<p>Student: {{projectInfo "studentName"}}</p>
+		<p>Created At: {{projectInfo "createdAt"}}</p>
+		{{#if isComplete}}
+			<p style="color: crimson;">Completed at: {{projectInfo "completedAt"}}</p>
+		{{/if}}
+		<p>
+			{{#unless isComplete}}
+				<input type="button" id="save" value="Save" />
+				<input type="button" id="saveAndQuit" value="Save & Quit" />
+			{{/unless}}
+			<input type="button" id="quit" value="Quit" />
+			{{#unless isComplete}}
+				<input type="button" id="submit" value="Submit" />
+				<input type="button" id="submitAndClose" value="Submit & Close Project" />
+			{{/unless}}
+		</p>
+	</section>
+	<section>
+		<p>Essay: </p>
+		<textarea readonly>{{projectInfo "essay"}}</textarea>
+	</section>
+	<section>
+		<p>Comments: {{#if isComplete}}(you cannot edit a complete submission){{/if}}</p>
+		<textarea id="comments" placeholder="Type your comments here." {{compReadonly}}>{{projectInfo "comments"}}</textarea>
+	</section>
+</template>
