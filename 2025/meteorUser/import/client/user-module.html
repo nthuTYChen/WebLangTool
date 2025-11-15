@@ -1,5 +1,9 @@
+<!-- This is an example of a user interface that display
+     the user's profile with a logout function.
+ -->
 <template name="userHome">
 	<style>
+		/* As usual, explanations of the CSS settings are only provided in the lecture. */
 		body > article > table {
       		background-color: lightgrey;
       		border: 0;
@@ -18,6 +22,9 @@
     	}
 	</style>
 	<article>
+		<!-- A table for displaying the full name and the email of the user. 
+		     See user-module.js for the code of the two helpers.
+		-->
 		<table>
 			<tbody>
 				<tr>
@@ -28,6 +35,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<!-- A logout button. See user-module.js for the event listener. -->
 		<p>
 			<input type="button" id="logout" value="Log Out" />
 		</p>

@@ -60,6 +60,25 @@ Template.body.helpers(
 
 Template.signIn.events(
   {
+    // When clicking on the #signIn button in the signIn template,
+    // import the user-module.js, and then change the browse session
+    // to "userHome", so the userHome template can be loaded.
+    'click #signIn': function() {
+      let email = document.getElementById('username').value;
+      let password = document.getElementById('password').value;
+      Meteor.loginWithPassword(email, password, function(err) {
+        if(err) {
+          alert('login failed!');
+        }
+        else {
+          import('/import/client/user-module.js').then(
+            function() {
+              Session.set('browseSession', 'userHome');
+            }
+          );
+        }
+      });
+    },
     // When clicking on the #signUp button in the signIn template,
     // import the account-module.js, and then change the browse session
     // to "signUp", so the signUp template can be loaded.
