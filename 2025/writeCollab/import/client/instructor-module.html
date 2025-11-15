@@ -1,3 +1,4 @@
+<!-- The instructor interface -->
 <template name="instructorHome">
 	<style>
 		section > table {
@@ -33,11 +34,16 @@
 			transition: all ease-in 0.2s;
 		}
 	</style>
+	<!-- The subheader showing the "Instructor's Corner" information -->
 	<h6>Instructor's Corner: Rigorous training is the key to success!</h6>
+	<!-- Two buttons for different actions taken by the instructor. See
+	     /import/client/instructor-module.js -->
 	<p>
 		<input type="button" id="createNewProject" value="Create a New Project" />
 		<input type="button" id="logout" value="Log Out" />
 	</p>
+	<!-- Four grouped radio buttons for showing different sets of projects.
+	     See also /import/client/instructor-module.js -->
 	<p>
 		<input type="radio" name="showItems" id="allItems" checked="checked" /> All 
 		<input type="radio" name="showItems" id="newItems" /> New
@@ -45,7 +51,9 @@
 		<input type="radio" name="showItems" id="completeItems" /> Complete
 	</p>
 	<section>
+		<!-- A table for the project list -->
 		<table>
+			<!-- The headers for the column titles -->
 			<thead>
 				<tr>
 					<td>Project Title</td>
@@ -53,6 +61,7 @@
 					<td>Date of Completion</td>
 				</tr>
 			</thead>
+			<!-- Each row in the table body will be one project. -->
 			<tbody>
 				<tr>
 					<td>Fake project</td>
