@@ -73,6 +73,8 @@
 	</section>
 </template>
 
+<!-- The template for creating a new project by the instructor 
+     for the student -->
 <template name="createProject">
 	<style>
 		section > table {
@@ -103,12 +105,16 @@
 			resize: none;
 		}
 	</style>
+	<!-- The subheader for this project creation page -->
 	<h6>Creating a new writing project.</h6>
+	<!-- The two buttons for creating a new project or 
+	     cancelling the process. -->
 	<p>
 		<input type="button" id="create" value="Create" /> 
 		<input type="button" id="cancel" value="Cancel" />
 	</p>
 	<section>
+		<!-- A table for filling the project information -->
 		<table>
 			<tbody>
 				<tr>
@@ -125,12 +131,18 @@
 				</tr>
 				<tr>
 					<td>Instructions:</td>
+					<!-- <textarea> is used here because it is for multi-line
+					     text -->
 					<td>
 						<textarea id="instructions"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td>Word Limit:</td>
+					<!-- Note that the input type is "number" here, because word limit
+					     is naturally a number. It also comes with additional benefits.
+					     For instance, users can only put digits into this input field
+					     in the browser -->
 					<td>
 						<input type="number" id="wordLimit" />
 					</td>
