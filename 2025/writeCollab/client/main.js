@@ -3,9 +3,12 @@
  */
 
 // Import the session package.
+import { Mongo } from 'meteor/mongo';
 import { Session } from 'meteor/session';
 // Load the main HTML file as usual.
 import './main.html';
+
+global.writeProjectDB = new Mongo.Collection('writeProjectDB');
 
 // Set the default browseSession to "frontPage", so this template will be loaded
 // by default after /client/main.html is imported.
@@ -27,6 +30,12 @@ Template.body.helpers(
 // of the two buttons to specify their "identity" as a student or an instructor.
 Template.frontPage.events(
    {
+      'click #studentCheckIn': function() {
+         import('/import/client/student-module.js').then(function() {
+            Session.set('browseSession', 'studentHome');
+            Session.set('userSession', 'student');
+         });
+      },
       // For the instructor first.
       'click #instructorCheckIn': function() {
          // Import the instructor module.

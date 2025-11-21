@@ -1,5 +1,4 @@
-<!-- The instructor interface -->
-<template name="instructorHome">
+<template name="studentHome">
 	<style>
 		section > table {
 			width: 70vw;
@@ -33,13 +32,16 @@
 			cursor: pointer;
 			transition: all ease-in 0.2s;
 		}
+
+		table > tbody td > span {
+			color: crimson;
+		}
 	</style>
 	<!-- The subheader showing the "Instructor's Corner" information -->
-	<h6>Instructor's Corner: Rigorous training is the key to success!</h6>
+	<h6>Student's Corner: Writing makes you a more civilized individual.</h6>
 	<!-- Two buttons for different actions taken by the instructor. See
 	     /import/client/instructor-module.js -->
 	<p>
-		<input type="button" id="createNewProject" value="Create a New Project" />
 		<input type="button" id="logout" value="Log Out" />
 	</p>
 	<!-- Four grouped radio buttons for showing different sets of projects.
@@ -58,84 +60,29 @@
 				<tr>
 					<td>Project Title</td>
 					<td>Status</td>
-					<td>Date of Completion</td>
+					<td>Date of Creation</td>
 				</tr>
 			</thead>
 			<!-- Each row in the table body will be one project. -->
 			<tbody>
-				<tr>
-					<td>Fake project</td>
-					<td>incomplete</td>
-					<td>2025/11/14</td>
-				</tr>
+				{{#each writeProjects}}
+					<tr>
+						<td>{{title}} (v{{version}}) {{#if isNew}}<span>New!</span>{{/if}}</td>
+						<td>{{status}}</td>
+						<td>{{createdAt}}</td>
+					</tr>
+				{{else}}
+					<tr>
+						<td colspan="3">There is no writing project for you.</td>
+					</tr>
+				{{/each}}
 			</tbody>
 		</table>
 	</section>
 </template>
 
-<template name="createProject">
-	<style>
-		section > table {
-			width: 60vw;
-			margin: 2vh 10vw;
-			text-align: left;
-		}
-
-		table td {
-			padding: 5px;
-			border-bottom: 2px dotted grey;
-		}
-
-		table td:first-of-type {
-			width: 25%;
-			font-weight: bold;
-		}
-
-		table td > input, table td > textarea {
-			width: 100%;
-			padding: 5px 2px;
-			font-family: Domine, serif;
-			font-size: 100%;
-		}
-
-		table td > textarea {
-			height: 33vh;
-			resize: none;
-		}
-	</style>
-	<h6>Creating a new writing project.</h6>
+<template name="writing">
 	<p>
-		<input type="button" id="create" value="Create" /> 
-		<input type="button" id="cancel" value="Cancel" />
+		You are about to write a lot.
 	</p>
-	<section>
-		<table>
-			<tbody>
-				<tr>
-					<td>Project Title:</td>
-					<td>
-						<input type="text" id="projectTitle" />
-					</td>
-				</tr>
-				<tr>
-					<td>Student Name:</td>
-					<td>
-						<input type="text" id="studentName" />
-					</td>
-				</tr>
-				<tr>
-					<td>Instructions:</td>
-					<td>
-						<textarea id="instructions"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td>Word Limit:</td>
-					<td>
-						<input type="number" id="wordLimit" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
 </template>
