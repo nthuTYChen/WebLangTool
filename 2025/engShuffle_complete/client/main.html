@@ -1,0 +1,94 @@
+<head>
+  <title>engShuffle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts Import: Stack Sans Text & Domine -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Fenix&family=Barrio&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: content-box;
+    }
+
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      background-color: papayawhip;
+      font-family: Fenix, serif;
+      font-size: 2vh;
+      text-align: center;
+    }
+
+    section button {
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 120%;
+      font-family: Fredoka, serif;
+    }
+
+    section button:hover {
+      color: white;
+      background-color: orangered;
+      cursor: pointer;
+    }
+  </style>
+  {{> Template.dynamic template=browseSession}}
+</body>
+
+<template name="frontPage">
+  <style>
+    article > section:first-of-type {
+      padding-top: 25vh;
+      color: orangered;
+      text-shadow: 5px 5px 3px grey;
+      font-family: Barrio, serif;
+      font-size: 500%;
+      line-height: 16vh;
+      transform: rotate(0deg);
+      cursor: pointer;
+      transition: all ease-out 0.2s;
+    }
+
+    article > section > p > span:hover {
+      display: inline-block;
+      font-size: 140%;
+      color: orange;
+      text-shadow: 10px 10px 5px grey;
+      transform: translate(10px, 5px);
+      transform: rotate(345deg);
+      transition: all ease-out 0.1s;
+    }
+  </style>
+  <article>
+    <section>
+      <p>
+        {{#each value in frontPageHeader1}}
+          <span>{{value}}</span>
+        {{/each}}
+      </p>
+      <p>
+        {{#each value in frontPageHeader2}}
+          <span>{{value}}</span>
+        {{/each}}
+      </p>
+    </section>
+    <section>
+      <p>
+        <button>Let's Go!</button>
+      </p>
+    </section>
+  </article>
+</template>
