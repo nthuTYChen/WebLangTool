@@ -70,7 +70,79 @@ Template.studentHome.events(
 		// When the title column of each project is clicked,
 		// navigate the student to the "writing" template.
 		'click table > tbody td:first-of-type': function(event) {
+			let projectID = event.currentTarget.id.replace('project_', '');
+			Meteor.call('clearNewStatus', projectID, 'student');
 			Session.set('browseSession', 'writing');
+			Session.set('currentProjectID', projectID);
+		}
+	}
+);
+
+Template.writing.onCreated(
+	function() {
+		this.essayLength = new ReactiveVar(0);
+		Tracker.autorun(
+			function() {
+				Meteor.subscribe('singleWriteProject',
+					Session.get('currentProjectID'), Session.get('userSession'));
+			}
+		);
+	}
+);
+
+Template.writing.helpers(
+	{
+		essayLength: function() {
+			let currentEssayLength = Template.instance().essayLength;
+			let currentProject = writeProjectDB.findOne();
+			if(currentProject && currentProject.essay && currentEssayLength.get() === 0) {
+				currentEssayLength.set(currentProject.essay.split(' ').length);
+			}
+			return currentEssayLength.get();
+		},
+		projectInfo: function(key) {
+			let currentProject = writeProjectDB.findOne();
+			return currentProject && currentProject[key];
+		},
+		isComplete: function() {
+			let currentProject = writeProjectDB.findOne();
+			if(currentProject && currentProject.status === 'complete') {
+				return true;
+			}
+			return false;
+		},
+		isWithComments: function() {
+			let currentProject = writeProjectDB.findOne();
+			if(currentProject && currentProject.comments) {
+				return true;
+			}
+			return false;
+		}
+	}
+);
+
+Template.writing.events(
+	{
+		'click #save, click #saveAndQuit': function(event) {
+			let essayDraft = document.getElementById('essay').value;
+			Meteor.callAsync('saveStudentDraft', 
+				Session.get('currentProjectID'), essayDraft).then(function() {
+					alert('Draft Saved!');
+					if(event.currentTarget.id === 'saveAndQuit') {
+						Session.set('browseSession', 'studentHome');
+						Session.set('currentProjectID', '');
+					}
+				}).catch(function(err) {
+					alert(err.reason);
+				});
+		},
+		'click #quit': function() {
+			Session.set('browseSession', 'studentHome');
+			Session.set('currentProjectID', '');
+		},
+		'keyup #essay': function(event, instances) {
+			let currentDraft = event.currentTarget.value;
+			instances.essayLength.set(currentDraft.split(' ').length);
 		}
 	}
 );

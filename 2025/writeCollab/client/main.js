@@ -17,6 +17,7 @@ Session.setDefault('browseSession', 'frontPage');
 // When the application starts, the user is still "nobody", so the user session
 // is set as an empty string.
 Session.setDefault('userSession', '');
+Session.setDefault('currentProjectID', '');
 
 Template.body.helpers(
    {

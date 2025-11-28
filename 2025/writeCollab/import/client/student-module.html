@@ -72,7 +72,7 @@
 						<!-- Using {{}} to directly get project information from each document.
 						     In addition, based on whether "isNew" is TRUE or FALSE, the title
 						     will include or leave out "New!". -->
-						<td>{{title}} (v{{version}}) {{#if isNew}}<span>New!</span>{{/if}}</td>
+						<td id="project_{{_id}}">{{title}} (v{{version}}) {{#if isNew}}<span>New!</span>{{/if}}</td>
 						<td>{{status}}</td>
 						<td>{{createdAt}}</td>
 					</tr>
@@ -90,7 +90,85 @@
 
 <!-- The template for typing an essay for a project. -->
 <template name="writing">
-	<p>
-		You are about to write a lot.
-	</p>
+	<style>
+		section {
+			margin: 1vh 0;
+			padding: 5px;
+		}
+
+		section > textarea {
+			width: 100%;
+			height: 30vh;
+			font-family: Domine, serif;
+			font-size: 2vh;
+			border: 0;
+			resize: none;
+		}
+
+		section > textarea:focus {
+			border: 0;
+			outline: none;
+		}
+
+		section:not(:first-of-type) {
+			width: 80%;	
+			margin-left: 10%;
+			padding: 10px;
+			text-align: left;
+		}
+
+		section:not(:first-of-type):not(:last-of-type),
+		section:not(:first-of-type):not(:last-of-type) > textarea {
+			background-color: lightgreen;
+		}
+
+		section:last-of-type, section:last-of-type > textarea {
+			background-color: #e2eaee;
+		}
+
+		section:last-of-type > textarea {
+			height: 50vh;
+		}
+
+		section > p {
+			margin: 1vh 0;
+		}
+
+		section > p:first-of-type {
+			font-family: Stack Sans Text, sans-serif;
+			font-weight: bold;
+		}
+	</style>
+	<section>
+		<p>Project Title: {{projectInfo "title"}}</p>
+		<p>Instructor: {{projectInfo "instructor"}}</p>
+		<p>Created At: {{projectInfo "createdAt"}}</p>
+		{{#if isComplete}}
+			<p>Completed At: {{projectInfo "completedAt"}}</p>
+		{{/if}}
+		<p>
+			{{#unless isComplete}}
+				<input type="button" id="save" value="Save" /> 
+				<input type="button" id="saveAndQuit" value="Save & Quit" />
+			{{/unless}}
+			<input type="button" id="quit" value="Quit" />
+			{{#unless isComplete}}
+				<input type="button" id="submit" value="Submit" />
+			{{/unless}}
+		</p>
+	</section>
+	<section>
+		<p>Instructions:</p>
+		<textarea readonly>{{projectInfo "instructions"}}</textarea>
+	</section>
+	{{#if isWithComments}}
+		<section>
+			<p>Comments from the Instructor:</p>
+			<textarea readonly>{{projectInfo "comments"}}</textarea>
+		</section>
+	{{/if}}
+	<section>
+		<p>Word Count/Limit: <span style="color: seagreen;">{{essayLength}}</span> / <span style="color: crimson;">{{projectInfo "wordLimit"}}</span></p>
+		<textarea id="essay" placeholder="Type your essay here.">{{projectInfo "essay"}}</textarea>
+	</section>
 </template>

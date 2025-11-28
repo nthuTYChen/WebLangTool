@@ -16,6 +16,10 @@ Meteor.publish('writeProjects', function(identity, browseSession) {
 	}
 });
 
+Meteor.publish('singleWriteProject', function(projectID, identity) {
+	return writeProjectDB.find({_id: projectID, target: identity});
+});
+
 Meteor.startup(function() {
 
 });
@@ -43,6 +47,22 @@ Meteor.methods(
 			projectProfile.isNew = true;
 			// Insert the final project profile
 			writeProjectDB.insertAsync(projectProfile);
+		},
+		clearNewStatus: function(projectID, identity) {
+			writeProjectDB.updateAsync({_id: projectID, target: identity}, {$set: {isNew: false}});
+		},
+		saveStudentDraft: async function(projectID, essay) {
+			let targetProject = await writeProjectDB.findOneAsync({_id: projectID, target: 'student'});
+			if(targetProject) {
+				if(essay.split(' ').length > targetProject.wordLimit) {
+					throw new Meteor.Error('essay-too-long', 'The length of essay exceeds the limit.');
+				}
+				else {
+					await writeProjectDB.updateAsync({_id: projectID, target: 'student'}, 
+						{$set: {essay: essay}});
+				}
+			}
+			return;
 		}
 	}
 );
