@@ -17,6 +17,8 @@ Session.setDefault('browseSession', 'frontPage');
 // When the application starts, the user is still "nobody", so the user session
 // is set as an empty string.
 Session.setDefault('userSession', '');
+// Set the default session variable "currentProjectID", which stores the project ID
+// info to subscribe to the project information when users work on a specific project.
 Session.setDefault('currentProjectID', '');
 
 Template.body.helpers(
