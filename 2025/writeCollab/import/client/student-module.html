@@ -181,6 +181,6 @@
 		<!-- Present the current draft length as well as the project word limit. See the helpers in
 		     student-module.js -->
 		<p>Word Count/Limit: <span style="color: seagreen;">{{essayLength}}</span> / <span style="color: crimson;">{{projectInfo "wordLimit"}}</span></p>
-		<textarea id="essay" placeholder="Type your essay here.">{{projectInfo "essay"}}</textarea>
+		<textarea id="essay" placeholder="Type your essay here." {{compReadonly}}>{{projectInfo "essay"}}</textarea>
 	</section>
 </template>

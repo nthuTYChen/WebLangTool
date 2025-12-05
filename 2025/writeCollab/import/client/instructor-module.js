@@ -1,5 +1,36 @@
+// Import packages
+import { ReactiveVar } from 'meteor/reactive-var';
+import { Tracker } from 'meteor/tracker';
+
 // Import the HTML file so the template(s) can be loaded.
 import './instructor-module.html';
+
+Template.instructorHome.onCreated(function() {
+	this.itemCat = new ReactiveVar('allItems');
+	Tracker.autorun(
+		function() {
+			Meteor.subscribe('writeProjects', Session.get('userSession'), Session.get('browseSession'));
+		}
+	);
+});
+
+Template.instructorHome.helpers(
+	{
+		writeProjects: function() {
+			let currentItemCat = Template.instance().itemCat.get();
+			if(currentItemCat === 'incompleteItems') {
+				return writeProjectDB.find({status: 'incomplete'}, {sort: {createdAt: -1}});
+			}
+			else if(currentItemCat === 'completeItems') {
+				return writeProjectDB.find({status: 'complete'}, {sort: {createdAt: -1}});
+			}
+			else if(currentItemCat === 'newItems') {
+				return writeProjectDB.find({isNew: true}, {sort: {createdAt: -1}});
+			}
+			return writeProjectDB.find({}, {sort: {createdAt: -1}});
+		}
+	}
+);
 
 // All event listeners for the instructor interface.
 Template.instructorHome.events(

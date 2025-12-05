@@ -61,13 +61,18 @@
 					<td>Date of Completion</td>
 				</tr>
 			</thead>
-			<!-- Each row in the table body will be one project. -->
 			<tbody>
-				<tr>
-					<td>Fake project</td>
-					<td>incomplete</td>
-					<td>2025/11/14</td>
-				</tr>
+				{{#each writeProjects}}
+					<tr>
+						<td id="project_{{_id}}">{{title}} (v{{version}}) {{#if isNew}}<span>New!</span>{{/if}}</td>
+						<td>{{status}}</td>
+						<td>{{createdAt}}</td>
+					</tr>
+				{{else}}
+					<tr>
+						<td colspan="3">There is no writing project for you.</td>
+					</tr>
+				{{/each}}
 			</tbody>
 		</table>
 	</section>

@@ -81,6 +81,27 @@ Meteor.methods(
 			}
 			// Return a "normal" response to the client if there's no error thrown above.
 			return;
+		},
+		submitStudentDraft: async function(projectID, essay) {
+			let targetProject = await writeProjectDB.findOneAsync({_id: projectID, target: 'student'});
+			if(targetProject) {
+				if(essay.split(' ').length > targetProject.wordLimit) {
+					throw new Meteor.Error('essay-too-long', 'The length of essay exceeds the limit.');
+				}
+				else {
+					await writeProjectDB.updateAsync({_id: projectID, target: 'student'},
+						{$set: {essay: essay, status: 'complete', completedAt: new Date()}});
+					let newInstructorProject = targetProject;
+					delete newInstructorProject._id;
+					newInstructorProject.target = 'instructor';
+					newInstructorProject.essay = essay;
+					newInstructorProject.comments = '';
+					newInstructorProject.isNew = true;
+					newInstructorProject.createdAt = new Date();
+					await writeProjectDB.insertAsync(newInstructorProject);
+				}
+			}
+			return;
 		}
 	}
 );

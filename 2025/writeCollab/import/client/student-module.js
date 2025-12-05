@@ -104,6 +104,13 @@ Template.writing.onCreated(
 
 Template.writing.helpers(
 	{
+		compReadonly: function() {
+			let currentProject = writeProjectDB.findOne();
+			if(currentProject && currentProject.status === 'complete') {
+				return 'readonly';
+			}
+			return '';
+		},
 		// Return the current essay length to the writing template.
 		essayLength: function() {
 			// The decision on which number to return to the writing template is
@@ -144,8 +151,7 @@ Template.writing.helpers(
 		projectInfo: function(key) {
 			// Get the one and only project document.
 			let currentProject = writeProjectDB.findOne();
-			. If
-			// current project is NOT undefined, then return currentProject[key].
+			// If the current project is NOT undefined, then return currentProject[key].
 			return currentProject && currentProject[key];
 		},
 		// Return true or false based on whether the "status" key of the project
@@ -206,6 +212,18 @@ Template.writing.events(
 			// Set the browse session to "studentHome", and reset the currentProjectID to nothing.
 			Session.set('browseSession', 'studentHome');
 			Session.set('currentProjectID', '');
+		},
+		'click #submit': function() {
+			if(confirm('Are you sure to submit this draft?')) {
+				let essayDraft = document.getElementById('essay').value;
+				Meteor.callAsync('submitStudentDraft', 
+					Session.get('currentProjectID'), essayDraft).then(function() {
+						Session.set('browseSession', 'studentHome');
+						Session.set('currentProjectID', '');
+					}).catch(function(err) {
+						alert(err.error);
+					});
+			}
 		},
 		// Whenever the users press a key and release a key (i.e., "key up") in the #essay <textarea>...
 		'keyup #essay': function(event, instances) {
