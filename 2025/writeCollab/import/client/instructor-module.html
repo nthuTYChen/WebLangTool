@@ -33,6 +33,10 @@
 			cursor: pointer;
 			transition: all ease-in 0.2s;
 		}
+
+		table > tbody td > span {
+			color: crimson;
+		}
 	</style>
 	<!-- The subheader showing the "Instructor's Corner" information -->
 	<h6>Instructor's Corner: Rigorous training is the key to success!</h6>
@@ -154,5 +158,91 @@
 				</tr>
 			</tbody>
 		</table>
+	</section>
+</template>
+
+<template name="commenting">
+	<style>
+		section {
+			margin: 1vh 0;
+			padding: 5px;
+		}
+
+		section > textarea {
+			width: 100%;
+			height: 30vh;
+			font-family: Domine, serif;
+			font-size: 2vh;
+			border: 0;
+			resize: none;
+		}
+
+		section > textarea:focus {
+			border: 0;
+			outline: none;
+		}
+
+		section:not(:first-of-type) {
+			width: 80%;	
+			margin-left: 10%;
+			padding: 10px;
+			text-align: left;
+		}
+
+		section:not(:first-of-type):not(:last-of-type),
+		section:not(:first-of-type):not(:last-of-type) > textarea {
+			background-color: lightgreen;
+		}
+
+		section:last-of-type, section:last-of-type > textarea {
+			background-color: #e2eaee;
+		}
+
+		section:last-of-type > textarea {
+			height: 50vh;
+		}
+
+		section > p {
+			margin: 1vh 0;
+		}
+
+		section > p:first-of-type {
+			font-family: Stack Sans Text, sans-serif;
+			font-weight: bold;
+		}
+	</style>
+	<!-- The first section focuses on presenting the current project information with
+	     the four buttons doing different things for the current project -->
+	<section>
+		<p>Project Title: {{projectInfo "title"}}</p>
+		<p>Student: {{projectInfo "studentName"}}</p>
+		<p>Created At: {{projectInfo "createdAt"}}</p>
+		<!-- Show this info only for completed projects -->
+		{{#if isComplete}}
+			<p>Completed At: {{projectInfo "completedAt"}}</p>
+		{{/if}}
+		<p>
+			<!-- Show these buttons for saving the current project draft 
+			     unless for completed projects -->
+			{{#unless isComplete}}
+				<input type="button" id="save" value="Save" /> 
+				<input type="button" id="saveAndQuit" value="Save & Quit" />
+			{{/unless}}
+			<input type="button" id="quit" value="Quit" />
+			<!-- Show this buttons for saving the current project draft 
+			     unless for completed projects -->
+			{{#unless isComplete}}
+				<input type="button" id="submit" value="Submit" />
+				<input type="button" id="submitAndClose" value="Submit & Close" />
+			{{/unless}}
+		</p>
+	</section>
+	<section>
+		<p>Essay:</p>
+		<textarea readonly>{{projectInfo "essay"}}</textarea>
+	</section>
+	<section>
+		<p>Comments:</p>
+		<textarea id="comments" placeholder="Type your comments here." {{compReadonly}}>{{projectInfo "comments"}}</textarea>
 	</section>
 </template>

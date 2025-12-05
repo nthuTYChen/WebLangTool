@@ -82,6 +82,10 @@ Meteor.methods(
 			// Return a "normal" response to the client if there's no error thrown above.
 			return;
 		},
+		saveInstructorDraft: function(projectID, comments) {
+			writeProjectDB.updateAsync({_id: projectID, target: 'instructor'}, {$set: {comments: comments}});
+			return;
+		},
 		submitStudentDraft: async function(projectID, essay) {
 			let targetProject = await writeProjectDB.findOneAsync({_id: projectID, target: 'student'});
 			if(targetProject) {
@@ -101,6 +105,23 @@ Meteor.methods(
 					await writeProjectDB.insertAsync(newInstructorProject);
 				}
 			}
+			return;
+		},
+		submitInstructorDraft: async function(projectID, comments, type) {
+			let newStudentProject = await writeProjectDB.findOneAsync({_id: projectID, target: 'instructor'});
+			writeProjectDB.updateAsync({_id: projectID, target: 'instructor'},
+				{$set: {comments: comments, status: 'complete', completedAt: new Date()}});
+			delete newStudentProject._id;
+			newStudentProject.target = 'student';
+			newStudentProject.comments = comments;
+			newStudentProject.version++;
+			newStudentProject.isNew = true;
+			newStudentProject.createdAt = new Date();
+			if(type === 'submitAndClose') {
+				newStudentProject.status = 'complete';
+				newStudentProject.completedAt = new Date();
+			}
+			writeProjectDB.insertAsync(newStudentProject);
 			return;
 		}
 	}
