@@ -82,45 +82,83 @@ Meteor.methods(
 			// Return a "normal" response to the client if there's no error thrown above.
 			return;
 		},
+		// Save the project ID and comments from an instructor. This is not an asynchronous function
+		// since nothing waits for the result of an asynchronous action.
 		saveInstructorDraft: function(projectID, comments) {
+			// Update the comments to an instructor project based on the project ID
 			writeProjectDB.updateAsync({_id: projectID, target: 'instructor'}, {$set: {comments: comments}});
+			// Return a normal response
 			return;
 		},
+		// A draft submitted by a student for a project
 		submitStudentDraft: async function(projectID, essay) {
+			// Find the current student project based on the project ID. Wait for the result so the
+			// matched document (if any) could be stored to "targetProject".
 			let targetProject = await writeProjectDB.findOneAsync({_id: projectID, target: 'student'});
+			// Do the rest if there is indeed a target project (i.e., targetProject !== undefined)
 			if(targetProject) {
+				// Split the essay draft into separate words by space and check if the number of words
+				// is higher than the word limit in the target project.
 				if(essay.split(' ').length > targetProject.wordLimit) {
+					// If so, throw an error message.
 					throw new Meteor.Error('essay-too-long', 'The length of essay exceeds the limit.');
 				}
+				// If the word count is within the limit...
 				else {
+					// Update the essay to the target student project by the project ID,
+					// set the project to be complete, and add the date of completion
 					await writeProjectDB.updateAsync({_id: projectID, target: 'student'},
 						{$set: {essay: essay, status: 'complete', completedAt: new Date()}});
+					// Create a copy of the target project document as the new instructor project
 					let newInstructorProject = targetProject;
+					// Remove the _id key since document ID will be automatically assigned by
+					// MongoDB upon insertion.
 					delete newInstructorProject._id;
+					// Change the target user identity
 					newInstructorProject.target = 'instructor';
+					// Add the student's essay to the new project for the instructor
 					newInstructorProject.essay = essay;
+					// Add the comment key for the instructor project
 					newInstructorProject.comments = '';
+					// Make the new project "new"
 					newInstructorProject.isNew = true;
+					// Reset the time of creation for the new project
 					newInstructorProject.createdAt = new Date();
+					// Insert the new project to the collection
 					await writeProjectDB.insertAsync(newInstructorProject);
 				}
 			}
 			return;
 		},
+		// Very similar with "submitStudentDraft" above, except with a few changes.
+		// The method receives current project ID, comments from an instructor, and the
+		// type of submission (submit vs. submit and close)
 		submitInstructorDraft: async function(projectID, comments, type) {
+			// Find the current target project document as well based on the project ID
+			// to create a copy for the new student project.
 			let newStudentProject = await writeProjectDB.findOneAsync({_id: projectID, target: 'instructor'});
+			// Update the instructor project to set the comments, change the status to be complete,
+			// set the date of completion.
 			writeProjectDB.updateAsync({_id: projectID, target: 'instructor'},
 				{$set: {comments: comments, status: 'complete', completedAt: new Date()}});
 			delete newStudentProject._id;
+			// Change the target user to be the student
 			newStudentProject.target = 'student';
+			// Add the comments for the student
 			newStudentProject.comments = comments;
+			// Increase the version number by 1
 			newStudentProject.version++;
 			newStudentProject.isNew = true;
 			newStudentProject.createdAt = new Date();
+			// If the instructor also choose to close the project...
 			if(type === 'submitAndClose') {
+				// Set this "new" student project to be complete, so the student
+				// cannot submit a new essay
 				newStudentProject.status = 'complete';
+				// Set the time of completion.
 				newStudentProject.completedAt = new Date();
 			}
+			// Insert the new student project to the collection.
 			writeProjectDB.insertAsync(newStudentProject);
 			return;
 		}

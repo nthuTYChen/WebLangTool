@@ -104,6 +104,8 @@ Template.writing.onCreated(
 
 Template.writing.helpers(
 	{
+		// If the current project is complete, return 'readonly', so students
+		// can no longer edit their text in the #essay <textarea> element.
 		compReadonly: function() {
 			let currentProject = writeProjectDB.findOne();
 			if(currentProject && currentProject.status === 'complete') {
@@ -213,14 +215,25 @@ Template.writing.events(
 			Session.set('browseSession', 'studentHome');
 			Session.set('currentProjectID', '');
 		},
+		// The function for submitting a writing project by the student.
 		'click #submit': function() {
+			// Use the JavaScript function confirm() to show a confirm box.
+			// Only if the user click on 'OK', this if condition would be TRUE.
+			// If the user click on 'Cancel', nothing in this block will run.
 			if(confirm('Are you sure to submit this draft?')) {
+				// Get the essay text from the #essay <textarea> element
 				let essayDraft = document.getElementById('essay').value;
+				// Send the current project ID and the essay draft to the server method
+				// "submitStudentDraft" (see /server/main.js), and take different actions
+				// based on whether the server returns a normal response or an error.
 				Meteor.callAsync('submitStudentDraft', 
 					Session.get('currentProjectID'), essayDraft).then(function() {
+						// With a normal respons, run everything inside "then()"
+						// Just go back to the studentHome and reset the current project ID
 						Session.set('browseSession', 'studentHome');
 						Session.set('currentProjectID', '');
 					}).catch(function(err) {
+						// When an error is caught, show a pop-up box with the error message.
 						alert(err.error);
 					});
 			}

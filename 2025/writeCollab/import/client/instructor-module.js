@@ -16,6 +16,7 @@ Template.instructorHome.onCreated(function() {
 
 Template.instructorHome.helpers(
 	{
+		// Return project documents; see /import/client/student-module.js for explanations.
 		writeProjects: function() {
 			let currentItemCat = Template.instance().itemCat.get();
 			if(currentItemCat === 'incompleteItems') {
@@ -35,6 +36,8 @@ Template.instructorHome.helpers(
 // All event listeners for the instructor interface.
 Template.instructorHome.events(
 	{
+		// Change the project category based on the ID of a clicked
+		// radio button.
 		'click input[type="radio"]': function(event, instances) {
 			// Get the ID of the current target, and set the 
 			// template reactive variable to be this ID.
@@ -46,10 +49,21 @@ Template.instructorHome.events(
 		'click #createNewProject': function() {
 			Session.set('browseSession', 'createProject');
 		},
+		// When the title column of a project is clicked...
 		'click table > tbody td:first-of-type': function(event) {
+			// Get the project ID information based on the project title that
+			// users click on from the "id" attribute of the <td> element.
+			// See student-module.html.
 			let projectID = event.currentTarget.id.replace('project_', '');
+			// Send the project ID to the server method "clearNewStatus" to 
+			// set "isNew" of the current student project to be FALSE.
+			// See /server/main.js.
 			Meteor.call('clearNewStatus', projectID, 'instructor');
+			// navigate the student to the "commenting" template by setting the 
+			// "browseSession" session variable.
 			Session.set('browseSession', 'commenting');
+			// Set the current project ID to the session variable "currentProjectID",
+			// so the application can only subscribe to the current project info (see below).
 			Session.set('currentProjectID', projectID);
 		},
 		// Clicking on the "Log Out" button
@@ -97,6 +111,8 @@ Template.commenting.onCreated(
 	function() {
 		Tracker.autorun(
 			function() {
+				// Subscribe to the publication that only publish the information of the
+				// current writing project based on the project ID and the user identity.
 				Meteor.subscribe('singleWriteProject',
 					Session.get('currentProjectID'), Session.get('userSession'));
 			}
@@ -106,6 +122,8 @@ Template.commenting.onCreated(
 
 Template.commenting.helpers(
 	{
+		// If the current project is complete, return 'readonly', so students
+		// can no longer edit their text in the #comments <textarea> element.
 		compReadonly: function() {
 			let currentProject = writeProjectDB.findOne();
 			if(currentProject && currentProject.status === 'complete') {
@@ -113,10 +131,14 @@ Template.commenting.helpers(
 			}
 			return '';
 		},
+		// Return first-level project info based on the name of the key
+		// received from the commenting template.
 		projectInfo: function(key) {
 			let currentProject = writeProjectDB.findOne();
 			return currentProject && currentProject[key];
 		},
+		// Return true or false based on whether the "status" key of the project
+		// document is "complete" or not.
 		isComplete: function() {
 			let currentProject = writeProjectDB.findOne();
 			if(currentProject && currentProject.status === 'complete') {
@@ -150,12 +172,23 @@ Template.commenting.events(
 			Session.set('browseSession', 'instructorHome');
 			Session.set('currentProjectID', '');
 		},
+		// If the users submit their comments
 		'click #submit, click #submitAndClose': function(event) {
+			// Get the type of submission (submit or submitAndClose)
 			let submitType = event.currentTarget.id;
+			// Use the JavaScript function confirm() to show a confirm box.
+			// Only if the user click on 'OK', this if condition would be TRUE.
+			// If the user click on 'Cancel', nothing in this block will run.
 			if(confirm('Are you sure to submit your comments?')) {
+				// Get the comment text from the #comments <textarea> element
 				let commentDraft = document.getElementById('comments').value;
+				// Send the current project ID and the essay draft to the server method
+				// "submitInstructorDraft" (see /server/main.js), and take different actions
+				// based on whether the server returns a normal response or an error.
 				Meteor.call('submitInstructorDraft', 
 					Session.get('currentProjectID'), commentDraft, submitType);
+				// The comments will be saved anyway, so just navigate the users back to the
+				// main instructor interface and reset the project ID.
 				Session.set('browseSession', 'instructorHome');
 				Session.set('currentProjectID', '');
 			}

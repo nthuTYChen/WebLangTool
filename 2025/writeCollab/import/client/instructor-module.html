@@ -66,6 +66,10 @@
 				</tr>
 			</thead>
 			<tbody>
+				<!-- Showing each writing project document returned from the "writeProjects"
+				     helper in /import/client/instructor-module.js. Other details are similar to
+				     the same section in /import/client/student-module.html. Check my annotation
+				     there. -->
 				{{#each writeProjects}}
 					<tr>
 						<td id="project_{{_id}}">{{title}} (v{{version}}) {{#if isNew}}<span>New!</span>{{/if}}</td>
@@ -237,6 +241,7 @@
 			{{/unless}}
 		</p>
 	</section>
+	<!-- The section that displays the essay of a student and the added comments in the current project -->
 	<section>
 		<p>Essay:</p>
 		<textarea readonly>{{projectInfo "essay"}}</textarea>
