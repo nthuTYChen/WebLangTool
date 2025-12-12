@@ -12,6 +12,9 @@ Template.body.helpers(
 
 Template.frontPage.helpers(
    {
+      // Place individual characters in an array (non-reactive) and return
+      // the array to the front page, so we won't have to manually include
+      // HTML elements in the HTML file, which save us some work.
       frontPageHeader1: function() {
          let header = ['E', 'n', 'g', 'l', 'i', 's', 'h'];
          return header;
