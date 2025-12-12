@@ -92,3 +92,95 @@
     </section>
   </article>
 </template>
+
+<template name="shuffleTest">
+  <style>
+    h1, section, footer {
+      margin: 5vh 0;
+    }
+
+    h1 {
+      font-family: Fredoka, serif;
+    }
+
+    section {
+      width: 80%;
+      height: 25vh;
+      margin-left: 10%;
+    }
+
+    section#shuffleZone > button,
+    section#answerZone > button {
+      font-family: Fenix, serif;
+    }
+
+    section#shuffleZone > button {
+      color: white;
+      background-color: steelblue;
+      transition: all ease-out 0.2s;
+    }
+
+    section#answerZone > button {
+      color: white;
+      background-color: darkgoldenrod;
+      transition: all ease-out 0.2s;
+    }
+
+    section#shuffleZone > button:hover,
+    section#answerZone > button:hover {
+      opacity: 0.7;
+      transition: all ease-out 0.2s;
+    }
+
+    footer {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+    }
+
+    footer > table {
+      width: 100%;
+    }
+
+    footer > table td {
+      width: 25%;
+      padding: 2vh 1vw;
+      font-family: Barrio, serif;
+      font-size: 120%;
+      color: orangered;
+      text-shadow: 1px 1px 1px codetblue;
+    }
+  </style>
+  <article>
+    <h1>Build a sentence with a correct order!</h1>
+    <section id="shuffleZone">
+      {{#each value in shuffledWords}}
+        <button>{{value}}</button>
+      {{/each}}
+    </section>
+    <section id="answerZone">
+      {{#each value in orderedWords}}
+        <button>{{value}}</button>
+      {{/each}}
+    </section>
+    <section>
+      <button id="start">Start</button>
+      {{#if isComplete}}
+        <button id="next">Next</button>
+      {{/if}}
+      <button id="end">End</button>
+    </section>
+  </article>
+  <footer>
+    <table>
+      <tbody>
+        <tr>
+          <td>{{userProfile "username"}}</td>
+          <td>Level: {{userProfile "level"}}</td>
+          <td>Score: {{userProfile "score"}}</td>
+          <td>Average Time: {{userProfile "meanRT"}} seconds</td>
+        </tr>
+      </tbody>
+    </table>
+  </footer>
+</template>
