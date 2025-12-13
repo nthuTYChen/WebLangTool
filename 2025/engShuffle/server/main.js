@@ -5,11 +5,22 @@ import { Mongo } from 'meteor/mongo';
 global.sentenceDB = new Mongo.Collection('sentenceDB');
 global.userProfileDB = new Mongo.Collection('userProfileDB');
 
+// Publish the test sentences according to the level of the user. Again, if you
+// have a real user-password system, the user level can be directly checked
+// on the server.
 Meteor.publish('sentencesByLevel', function(level) {
+	// There's no need to publish the entire "sentence" and the individual "words"
+	// in correct order, so there's no way a user can cheat with this information.
 	return sentenceDB.find({level: level}, {fields: {sentence: 0, words: 0}});
 });
 
+// Publish the user profile according to the username. Again, if you
+// have a real user-password system, the user profile can be published
+// directly by checking the user that is currently logged in.
 Meteor.publish('userProfile', function(username) {
+	// Do not publish with the array keeping the time lengths of each
+	// test, since they have no use on the client side. Again, only
+	// publish things that are necessary to minimize data transmission.
 	return userProfileDB.find({username: username}, {fields: {RTs: 0}});
 });
 
@@ -47,23 +58,42 @@ Meteor.startup(async function() {
 
 Meteor.methods(
 	{
+		// Add the user profile to the server collection. Again, if you have the real user-password system,
+		// you probably don't need this.
 		registerUser: function() {
+			// The user is always TYC to keep things simpler. The most important part here with the
+			// upsertAsync action is the keys and values that are added only when the profile is
+			// inserted into the collection. "level" is the current user level, "score" is the total score,
+			// "meanRT" is the average time spent on each test, "RTs" is an array that keeps each time
+			// length spent a test.
 			userProfileDB.upsertAsync({username: 'TYC'}, 
 				{$setOnInsert: {level: 'beginner', score: 0, meanRT: 0, RTs: []}});
 		},
+		// Validate the answer record submitted from the user. A lot of steps have to "wait"
+		// for the results of their action, so this function is asynchronous.
 		recordAns: async function(record) {
+			// Get the target sentence based on the sentence ID embedded in the answer record.
+			// store the matched document to targetSentence.
 			let targetSentence = await sentenceDB.findOneAsync({_id: record.sentenceID});
+			// Check the target sentence length again based on the number of words in the word
+			// array in the matched document.
 			let targetLength = targetSentence.words.length;
+			// Create an array of correctness with n "null" values, where n is the length of target sentence.
 			let resArray = new Array(targetLength);
+			// Set up the score counter.
 			let newScore = 0;
+			// Loop through each word in the answer word array and compare the word to each
+			// word in the correct word.
 			for(let index = 0 ; index < targetLength ; index++) {
+				// If the word in the answer is identical to the word in the correct order...
 				if(record.answer[index] === targetSentence.words[index]) {
+					// Increase the score counter by 1: 1 point per word in the correct position.
 					newScore++;
+					// Change the value in the same position in the array of correctness to "true",
+					// which means the answer word in this position is correct.
 					resArray[index] = true;
 				}
 			}
-			console.log(newScore);
-			console.log(resArray);
 		}
 	}
 );

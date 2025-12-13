@@ -153,24 +153,38 @@
   </style>
   <article>
     <h1>Build a sentence with a correct order!</h1>
+    <!-- The area where the words appear in a shuffled order returned by the shuffledWords helper -->
     <section id="shuffleZone">
+      <!-- shuffledWords returns an array of randomly ordered words, and each word
+           could be retreived from the array with "value in shuffledWords" -->
       {{#each value in shuffledWords}}
+        <!-- Each "value" (word) is represented as a button, so it can be chosen and ordered in the
+             answerZone below when users clink on it. -->
         <button>{{value}}</button>
       {{/each}}
     </section>
+    <!-- The area where the words appear in an order that users follow to click on the buttons in
+         the shuffleZone. Other logics are the same. -->
     <section id="answerZone">
       {{#each value in orderedWords}}
+      <!-- Each "value" (word) is represented as a button, so it can be chosen and sent back to the 
+           shuffleZone when users click on it. -->
         <button>{{value}}</button>
       {{/each}}
     </section>
     <section>
+      <!-- "Start the test button" -->
       <button id="start">Start</button>
+      <!-- Show this button only when the current test is complete; that is, when all the 
+           words are moved from shuffleZone to answerZone. See also /client/main.js -->
       {{#if isComplete}}
         <button id="next">Next</button>
       {{/if}}
+      <!-- Leave the test -->
       <button id="end">End</button>
     </section>
   </article>
+  <!-- In a footer, display the user info with the helper userProfile. See /client/main.js -->
   <footer>
     <table>
       <tbody>
