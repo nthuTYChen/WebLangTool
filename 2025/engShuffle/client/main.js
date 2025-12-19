@@ -149,6 +149,16 @@ Template.shuffleTest.events(
          // test has already started.
          event.currentTarget.style.display = 'none';
       },
+      'click #next': function(event, instances) {
+         instances.done = false;
+         instances.orderedWords.set([]);
+         let allSentences = _.shuffle(sentenceDB.find({}).fetch());
+         let shuffledList = _.shuffle(allSentences[0].shuffledWords);
+         instances.shuffledWords.set(shuffledList);
+         instances.sentenceLength.set(shuffledList.length);
+         instances.sentenceID.set(allSentences[0]._id);
+         instances.startTime = new Date();
+      },
       // When users click on any button in the shuffle zone...That is, to select any
       // shuffled word...
       'click section#shuffleZone > button': function(event, instances) {
@@ -187,7 +197,16 @@ Template.shuffleTest.events(
             // Call the server method recordAns and pass over ansRecord. Wait for the server's
             // response, "then" process the correctness of the answer from the server.
             Meteor.callAsync('recordAns', ansRecord).then(function(correctness) {
-
+               let orderedWords = document.querySelectorAll('section#answerZone > button');
+               for(let index = 0; index < correctness.length ; index++) {
+                  let word = orderedWords[index];
+                  if(correctness[index]) {
+                     word.classList.add('correct');
+                  }
+                  else {
+                     word.classList.add('incorrect');
+                  }
+               }
             });
          }
       },

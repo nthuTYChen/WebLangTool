@@ -94,6 +94,20 @@ Meteor.methods(
 					resArray[index] = true;
 				}
 			}
+			let userProfile = await userProfileDB.findOneAsync({username: record.username});
+			let userRTs = userProfile.RTs;
+			userRTs.push(record.RT);
+			let RTsum = 0;
+			userRTs.forEach(function(RT) {
+				RTsum += RT;
+			});
+			let newMeanRT = Math.round(RTsum / userRTs.length / 100) / 10;
+			let newUserScore = userProfile.score + newScore;
+			let upgrade = newUserScore > 50;
+			let newLevel = upgrade ? 'intermediate' : 'beginner';
+			await userProfileDB.updateAsync({username: record.username}, 
+				{$set: {score: newUserScore, meanRT: newMeanRT, RTs: userRTs, level: newLevel}});
+			return resArray;
 		}
 	}
 );
