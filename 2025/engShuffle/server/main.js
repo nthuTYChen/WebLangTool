@@ -94,19 +94,38 @@ Meteor.methods(
 					resArray[index] = true;
 				}
 			}
+			// Get the current user profile
 			let userProfile = await userProfileDB.findOneAsync({username: record.username});
+			// Get all the test time lengths for previous test from the profile
 			let userRTs = userProfile.RTs;
+			// Add the current test time length to the user's time length record array
 			userRTs.push(record.RT);
+			// Calculate the average test time length in seconds.
+			// A variable for storing the sum of test time lengths
 			let RTsum = 0;
+			// Loop through the array of all the test time lengths
 			userRTs.forEach(function(RT) {
+				// Add each time length to RTsum: RTsum += RT is equivalent to RTsum = RTsum + RT
 				RTsum += RT;
 			});
+			// Calculate the average test time length in seconds rounded to the first decimal place.
+			// Here is an example with RTsum = 5510 and userRTs.length = 5.
+			// 1: 5510 / 5 = 1102 (the average test time length in milliseconds)
+			// 2: 1102 / 100 = 11.02
+			// 3: Math.round(11.02) = 11 (Math.round() always rounds a number to an integer)
+			// 4: 11 / 10 = 1.1 (seconds rounded up to the first decimal place)
 			let newMeanRT = Math.round(RTsum / userRTs.length / 100) / 10;
+			// Add the score of the current test to the previous total score of the user
 			let newUserScore = userProfile.score + newScore;
+			// Check if the new total score is higher than 50.
 			let upgrade = newUserScore > 50;
+			// A short form of if...else... statement:
+			// If upgrade is TRUE, newLevel is "intermediate", or newLevel is "beginner"
 			let newLevel = upgrade ? 'intermediate' : 'beginner';
+			// Update the user profile
 			await userProfileDB.updateAsync({username: record.username}, 
 				{$set: {score: newUserScore, meanRT: newMeanRT, RTs: userRTs, level: newLevel}});
+			// Return the result array recording the correctness of each word to the client.
 			return resArray;
 		}
 	}

@@ -149,14 +149,23 @@ Template.shuffleTest.events(
          // test has already started.
          event.currentTarget.style.display = 'none';
       },
+      // Click Next to proceed to the next test
       'click #next': function(event, instances) {
+         // Reset the test status
          instances.done = false;
+         // Clear the ordered word list
          instances.orderedWords.set([]);
+         // Shuffle all the sentences on the client side again
          let allSentences = _.shuffle(sentenceDB.find({}).fetch());
+         // Get the first sentence, and shuffle the words again
          let shuffledList = _.shuffle(allSentences[0].shuffledWords);
+         // Set the new shuffled word list
          instances.shuffledWords.set(shuffledList);
+         // Set the length of the new sentence (as the length of the array length)
          instances.sentenceLength.set(shuffledList.length);
+         // Set the sentence ID to be the ID of the first sentence of the collection
          instances.sentenceID.set(allSentences[0]._id);
+         // Start a new timer
          instances.startTime = new Date();
       },
       // When users click on any button in the shuffle zone...That is, to select any
@@ -197,15 +206,30 @@ Template.shuffleTest.events(
             // Call the server method recordAns and pass over ansRecord. Wait for the server's
             // response, "then" process the correctness of the answer from the server.
             Meteor.callAsync('recordAns', ansRecord).then(function(correctness) {
+               // The correctness information marks whether each word is in the correct position.
+               // Based on this information, we can present each button representing an ordered word
+               // in different colors.
+               // First of all, get all the answer zone buttons from the HTML document using
+               // querySelectorAll(), and all matched elements are stored as an array.
                let orderedWords = document.querySelectorAll('section#answerZone > button');
+               // Loop through the correctness array: The length of this array is identical to
+               // the length of the answer zone buttons representing ordered words.
                for(let index = 0; index < correctness.length ; index++) {
+                  // In each loop, get the element that represents an ordered word based on
+                  // the index number.
                   let word = orderedWords[index];
+                  // Then, with the same index number, check if it is TRUE in the correctness array
                   if(correctness[index]) {
+                     // If so, add an HTML class "correct" to the button
                      word.classList.add('correct');
                   }
                   else {
+                     // If not, add an HTML class "incorrect" to the button
                      word.classList.add('incorrect');
                   }
+                  // Based on which class is added to the button, the CSS style defined in the
+                  // /client/main.html will apply automatically to present the buttons in a 
+                  // green or red color.
                }
             });
          }
